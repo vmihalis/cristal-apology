@@ -511,6 +511,35 @@
             overflow: hidden;
         }
 
+        /* Room structure - walls and floor */
+        .room-wall {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 25%;
+            background: linear-gradient(180deg, #1a1a28 0%, #1f1f30 100%);
+        }
+
+        .room-floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 25%;
+            background: linear-gradient(180deg, #2a2535 0%, #1e1a25 100%);
+        }
+
+        /* Baseboard trim between wall and floor */
+        .room-baseboard {
+            position: absolute;
+            bottom: 25%;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #35303d;
+        }
+
         /* Moonlight effect */
         .moonlight {
             position: absolute;
@@ -520,6 +549,7 @@
             height: 70%;
             background: radial-gradient(ellipse at top right, rgba(200, 210, 255, 0.08) 0%, transparent 60%);
             pointer-events: none;
+            z-index: 1;
         }
 
         /* Window */
@@ -530,9 +560,10 @@
             width: 120px;
             height: 150px;
             background: linear-gradient(180deg, #1a1a3a 0%, #252550 100%);
-            border: 8px solid #2a2a3a;
+            border: 8px solid #3a3545;
             border-radius: 8px;
             box-shadow: inset 0 0 30px rgba(150, 170, 255, 0.1);
+            z-index: 2;
         }
 
         .bedroom-window::before {
@@ -576,83 +607,183 @@
         /* Bed */
         .bed {
             position: absolute;
-            bottom: 15%;
+            bottom: 18%;
             left: 50%;
             transform: translateX(-50%);
             width: 300px;
-            height: 120px;
+            height: 140px;
+            z-index: 5;
         }
 
-        .mattress {
+        /* Bed frame - visible side */
+        .bed-frame {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 50px;
-            background: linear-gradient(180deg, #3a3a5a 0%, #2a2a4a 100%);
-            border-radius: 10px;
+            height: 20px;
+            background: linear-gradient(180deg, #4a3a2a 0%, #3a2a1a 100%);
+            border-radius: 5px;
+        }
+
+        /* Bed legs */
+        .bed-leg {
+            position: absolute;
+            bottom: -15px;
+            width: 15px;
+            height: 15px;
+            background: #3a2a1a;
+            border-radius: 3px;
+        }
+
+        .bed-leg:first-child { left: 20px; }
+        .bed-leg:last-child { right: 20px; }
+
+        .mattress {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(180deg, #4a4a6a 0%, #3a3a5a 100%);
+            border-radius: 8px;
+        }
+
+        /* Body bump visible on top of blanket - torso area */
+        .body-bump-torso {
+            position: absolute;
+            bottom: 55px;
+            left: 70px;
+            width: 120px;
+            height: 35px;
+            background: linear-gradient(180deg, #8070dd 0%, #7060cd 100%);
+            border-radius: 50% 50% 40% 40%;
+            z-index: 4;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Body bump - hip/legs area */
+        .body-bump-legs {
+            position: absolute;
+            bottom: 50px;
+            left: 160px;
+            width: 90px;
+            height: 25px;
+            background: linear-gradient(180deg, #7a6add 0%, #6a5acd 100%);
+            border-radius: 40% 50% 40% 40%;
+            z-index: 4;
+        }
+
+        /* Feet bump at end of blanket */
+        .feet-bump {
+            position: absolute;
+            bottom: 55px;
+            right: 35px;
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(180deg, #7a6add 0%, #6a5acd 100%);
+            border-radius: 50% 50% 30% 30%;
+            z-index: 4;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .blanket {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             width: 100%;
-            height: 70px;
-            background: linear-gradient(180deg, #6a5acd 0%, #5a4abd 100%);
-            border-radius: 15px 15px 10px 10px;
+            height: 50px;
+            background: linear-gradient(180deg, #7060cd 0%, #6a5acd 50%, #5a4abd 100%);
+            border-radius: 10px 10px 10px 10px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+        }
+
+        /* Blanket edge draping down */
+        .blanket::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 10px;
+            right: 10px;
+            height: 12px;
+            background: linear-gradient(180deg, #5a4abd 0%, #4a3aad 100%);
+            border-radius: 0 0 8px 8px;
         }
 
         .pillow {
             position: absolute;
-            bottom: 60px;
+            bottom: 70px;
             left: 20px;
-            width: 80px;
-            height: 40px;
-            background: linear-gradient(180deg, #e8e8f0 0%, #d0d0e0 100%);
-            border-radius: 20px;
+            width: 85px;
+            height: 45px;
+            background: linear-gradient(180deg, #f0f0f8 0%, #e0e0e8 100%);
+            border-radius: 25px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Pillow indent where head is */
+        .pillow::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 15px;
+            width: 50px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
         }
 
         /* Sleeping character (you) */
         .sleeper {
             position: absolute;
-            bottom: 55px;
-            left: 60px;
-            z-index: 2;
+            bottom: 75px;
+            left: 45px;
+            z-index: 4;
         }
 
         .sleeper-head {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(180deg, #f5d0c5 0%, #e8c0b5 100%);
             border-radius: 50%;
             position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .sleeper-hair {
             position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            height: 30px;
-            background: #3a3a4a;
-            border-radius: 25px 25px 0 0;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            height: 32px;
+            background: linear-gradient(180deg, #4a4a5a 0%, #3a3a4a 100%);
+            border-radius: 28px 28px 0 0;
         }
 
         .sleeper-eyes {
             position: absolute;
-            top: 20px;
+            top: 22px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .sleeper-eye {
-            width: 8px;
+            width: 10px;
             height: 2px;
             background: #3a3a4a;
             border-radius: 2px;
+        }
+
+        /* Visible shoulder/arm peeking out */
+        .sleeper-shoulder {
+            position: absolute;
+            top: 35px;
+            left: 5px;
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(180deg, #f5d0c5 0%, #e8c0b5 100%);
+            border-radius: 15px 5px 15px 15px;
         }
 
         .sleeper-zzz {
@@ -668,16 +799,17 @@
         .sleeper-zzz:nth-child(2) { animation-delay: 0.5s; right: -45px; top: -35px; font-size: 14px; }
         .sleeper-zzz:nth-child(3) { animation-delay: 1s; right: -55px; top: -50px; font-size: 12px; }
 
-        /* Nightstand */
+        /* Nightstand - now on the LEFT side of bed */
         .nightstand {
             position: absolute;
-            bottom: 15%;
-            right: 20%;
+            bottom: 18%;
+            left: 18%;
             width: 80px;
             height: 70px;
-            background: linear-gradient(180deg, #4a4a5a 0%, #3a3a4a 100%);
+            background: linear-gradient(180deg, #5a4a5a 0%, #4a3a4a 100%);
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 6;
         }
 
         .nightstand-drawer {
@@ -731,6 +863,18 @@
             justify-content: center;
             transition: all 0.5s ease;
             box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+        }
+
+        /* Phone showing active call - green glow */
+        .phone-screen-glow.on-call {
+            background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+            box-shadow: 0 0 25px rgba(74, 222, 128, 0.5);
+            animation: callPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes callPulse {
+            0%, 100% { box-shadow: 0 0 25px rgba(74, 222, 128, 0.5); }
+            50% { box-shadow: 0 0 35px rgba(74, 222, 128, 0.7); }
         }
 
         .phone-screen-glow.dying {
@@ -859,12 +1003,13 @@
             opacity: 1;
         }
 
-        /* Desk lamp */
+        /* Desk lamp - on top of nightstand (left side) */
         .desk-lamp {
-            bottom: calc(15% + 70px);
-            right: calc(20% + 60px);
+            bottom: calc(18% + 70px);
+            left: calc(18% + 50px);
             width: 40px;
             height: 60px;
+            z-index: 7;
         }
 
         .lamp-base {
@@ -899,16 +1044,17 @@
             border-radius: 5px 5px 15px 15px;
         }
 
-        /* Book on floor */
+        /* Book on floor - in front of bed */
         .floor-book {
-            bottom: 8%;
-            left: 25%;
+            bottom: 15%;
+            left: 45%;
             width: 50px;
             height: 35px;
             background: linear-gradient(90deg, #cc7a7a 0%, #aa5a5a 100%);
             border-radius: 3px;
             transform: rotate(-15deg);
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 3;
         }
 
         .floor-book::before {
@@ -921,12 +1067,13 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Slippers */
+        /* Slippers - at foot of bed */
         .slippers {
-            bottom: 5%;
-            left: 40%;
+            bottom: 12%;
+            left: 55%;
             width: 60px;
             height: 30px;
+            z-index: 3;
         }
 
         .slipper {
@@ -940,12 +1087,13 @@
         .slipper:first-child { left: 0; transform: rotate(-10deg); }
         .slipper:last-child { right: 0; transform: rotate(5deg); }
 
-        /* Plant */
+        /* Plant - moved to right side */
         .plant {
-            bottom: calc(15% + 70px);
-            left: 15%;
+            bottom: 20%;
+            right: 15%;
             width: 50px;
             height: 70px;
+            z-index: 3;
         }
 
         .plant-pot {
@@ -967,45 +1115,251 @@
             font-size: 35px;
         }
 
-        /* Clothes pile */
+        /* Clothes pile - moved to right side */
         .clothes-pile {
-            bottom: 10%;
-            right: 10%;
+            bottom: 18%;
+            right: 25%;
             width: 60px;
             height: 40px;
             background: linear-gradient(180deg, #6a6acc 0%, #8a7acc 50%, #5a5aaa 100%);
             border-radius: 20px 25px 15px 20px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 3;
         }
 
-        /* Charger (hidden under nightstand) */
+        /* Charger (peeking out from under nightstand on left) */
         .charger-spot {
-            bottom: calc(15% - 15px);
-            right: calc(20% + 20px);
-            width: 50px;
-            height: 25px;
+            bottom: calc(18% - 5px);
+            left: calc(18% + 20px);
+            width: 70px;
+            height: 35px;
+            z-index: 4;
         }
 
+        /* The white USB cable wire */
         .charger-cable {
             position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 8px;
-            background: #2a2a3a;
-            border-radius: 4px;
+            bottom: 12px;
+            left: 0;
+            width: 45px;
+            height: 4px;
+            background: linear-gradient(90deg, #e8e8e8 0%, #d0d0d0 50%, #e8e8e8 100%);
+            border-radius: 2px;
+            transform: rotate(-5deg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
+        /* Lightning/USB-C connector tip */
         .charger-plug {
             position: absolute;
-            bottom: 0;
+            bottom: 8px;
+            left: 40px;
+            width: 22px;
+            height: 10px;
+            background: linear-gradient(90deg, #c0c0c0 0%, #e0e0e0 50%, #c0c0c0 100%);
+            border-radius: 2px 5px 5px 2px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .charger-plug::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 2px;
+            width: 6px;
+            height: 6px;
+            background: linear-gradient(90deg, #a0a0a0 0%, #c0c0c0 100%);
+            border-radius: 1px;
+        }
+
+        /* Metal contacts on the connector */
+        .charger-plug::after {
+            content: '';
+            position: absolute;
+            right: 4px;
+            top: 3px;
+            width: 8px;
+            height: 4px;
+            background: linear-gradient(90deg, #808080 0%, #606060 100%);
+            border-radius: 1px;
+        }
+
+        /* ============ CALL DYING INTRO PHASE ============ */
+        /* Floating phone above the bedroom - bedroom stays visible */
+        .call-dying-screen {
+            position: absolute;
+            top: 5%;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 15px;
-            background: linear-gradient(180deg, #4a4a5a 0%, #3a3a4a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+            z-index: 35;
+        }
+
+        .call-dying-screen.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .call-active-phone {
+            width: 200px;
+            height: 360px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-radius: 30px;
+            border: 4px solid #3a3a4a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .call-active-phone::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            width: 50px;
+            height: 5px;
+            background: #3a3a4a;
             border-radius: 3px;
+        }
+
+        .call-screen-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .call-contact-photo-big {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #f472b6 0%, #c084fc 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 30px rgba(244, 114, 182, 0.4);
+            animation: callGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes callGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(244, 114, 182, 0.4); }
+            50% { box-shadow: 0 0 50px rgba(244, 114, 182, 0.6); }
+        }
+
+        .call-contact-name-big {
+            font-size: 1.6rem;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .call-timer {
+            font-size: 1.1rem;
+            color: #a0a0b0;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .call-active-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4ade80;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .call-active-dot {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulseDot 1s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .low-battery-warning {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ef4444;
+            font-size: 0.85rem;
+            padding: 8px 15px;
+            background: rgba(239, 68, 68, 0.15);
+            border-radius: 20px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .low-battery-warning.show {
+            opacity: 1;
+            animation: warningPulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { background: rgba(239, 68, 68, 0.15); }
+            50% { background: rgba(239, 68, 68, 0.3); }
+        }
+
+        .phone-dying-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: black;
+            border-radius: 26px;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.5s ease;
+        }
+
+        .phone-dying-overlay.show {
+            opacity: 1;
+        }
+
+        .phone-dying-overlay .dead-icon {
+            font-size: 60px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s ease;
+        }
+
+        .phone-dying-overlay.show .dead-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .call-disconnected-msg {
+            margin-top: 20px;
+            color: #ef4444;
+            font-size: 1.2rem;
+            opacity: 0;
+            text-align: center;
+            transition: opacity 0.5s ease;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .call-disconnected-msg.show {
+            opacity: 1;
         }
 
         /* ============ CHARGING PHASE ============ */
@@ -1572,7 +1926,38 @@
 
     <!-- ============ STAGE 2: PHONE CHARGING ============ -->
     <div class="scene" id="phone-stage">
+        <!-- Call Dying Intro Screen -->
+        <div class="call-dying-screen" id="call-dying-screen">
+            <div class="call-active-phone">
+                <div class="call-screen-content">
+                    <div class="call-contact-photo-big">💕</div>
+                    <div class="call-contact-name-big">Cristal</div>
+                    <div class="call-timer" id="call-timer">02:47:13</div>
+                    <div class="call-active-indicator">
+                        <div class="call-active-dot"></div>
+                        <span>Connected</span>
+                    </div>
+                    <div class="low-battery-warning" id="low-battery-warning">
+                        <span>🪫</span>
+                        <span>Low Battery - 3%</span>
+                    </div>
+                </div>
+                <div class="phone-dying-overlay" id="phone-dying-overlay">
+                    <span class="dead-icon">📵</span>
+                </div>
+            </div>
+            <div class="call-disconnected-msg" id="call-disconnected-msg">
+                Call Disconnected<br>
+                <small>Battery depleted</small>
+            </div>
+        </div>
+
         <div class="bedroom">
+            <!-- Room structure -->
+            <div class="room-wall"></div>
+            <div class="room-floor"></div>
+            <div class="room-baseboard"></div>
+
             <!-- Morning light overlay -->
             <div class="morning-light" id="morning-light"></div>
 
@@ -1592,8 +1977,15 @@
 
             <!-- Bed with sleeper -->
             <div class="bed">
+                <div class="bed-frame">
+                    <div class="bed-leg"></div>
+                    <div class="bed-leg"></div>
+                </div>
                 <div class="mattress"></div>
                 <div class="blanket"></div>
+                <div class="body-bump-torso"></div>
+                <div class="body-bump-legs"></div>
+                <div class="feet-bump"></div>
                 <div class="pillow"></div>
                 <div class="sleeper" id="sleeper">
                     <div class="sleeper-head">
@@ -1603,6 +1995,7 @@
                             <div class="sleeper-eye"></div>
                         </div>
                     </div>
+                    <div class="sleeper-shoulder"></div>
                     <div class="sleeper-zzz">Z</div>
                     <div class="sleeper-zzz">z</div>
                     <div class="sleeper-zzz">z</div>
@@ -2540,10 +2933,11 @@
         // ============ STAGE 2: PHONE CHARGING MINI-GAME ============
 
         // Stage 2 State
-        let stage2Phase = 'idle'; // idle, wakeup, search, charging, calling, complete
+        let stage2Phase = 'idle'; // idle, calldying, wakeup, search, charging, calling, complete
         let callAttempts = 0;
         const MAX_CALL_ATTEMPTS = 3;
         let searchedItems = new Set();
+        let callTimerInterval = null;
 
         // Search feedback messages for wrong items
         const searchFeedback = {
@@ -2729,43 +3123,99 @@
         // Start Stage 2
         function startStage2() {
             document.getElementById('phone-stage').classList.add('active');
-            stage2Phase = 'wakeup';
+            stage2Phase = 'calldying';
             stopAmbientSounds();
 
-            // Phase A: Wake up animation
-            setTimeout(runWakeUpPhase, 500);
+            // NEW: Start with call dying intro
+            runCallDyingIntro();
         }
 
-        // Phase A: Wake up and see dead phone
-        function runWakeUpPhase() {
-            const phoneScreen = document.getElementById('phone-screen');
+        // NEW: Call Dying Intro Phase - shows you were on call when phone died
+        function runCallDyingIntro() {
+            const callDyingScreen = document.getElementById('call-dying-screen');
+            const lowBatteryWarning = document.getElementById('low-battery-warning');
+            const phoneDyingOverlay = document.getElementById('phone-dying-overlay');
+            const callDisconnectedMsg = document.getElementById('call-disconnected-msg');
+            const callTimer = document.getElementById('call-timer');
+            const phoneScreenSmall = document.getElementById('phone-screen');
 
-            // Phone dies animation
-            phoneScreen.classList.add('dying');
-            playPhoneDie();
+            // Show the floating phone screen
+            callDyingScreen.classList.add('show');
 
-            // After phone dies, show alert
+            // Small phone on nightstand shows it's on a call (green glow)
+            phoneScreenSmall.classList.add('on-call');
+            phoneScreenSmall.querySelector('.phone-battery-icon').textContent = '📞';
+
+            // Start with a running call timer (simulate being on call for ~2h47m)
+            let hours = 2;
+            let minutes = 47;
+            let seconds = 13;
+
+            callTimerInterval = setInterval(() => {
+                seconds++;
+                if (seconds >= 60) {
+                    seconds = 0;
+                    minutes++;
+                }
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours++;
+                }
+                callTimer.textContent =
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(seconds).padStart(2, '0');
+            }, 1000);
+
+            // After 2 seconds, show low battery warning
             setTimeout(() => {
-                phoneScreen.classList.remove('dying');
-                phoneScreen.classList.add('dead');
-                phoneScreen.querySelector('.phone-battery-icon').textContent = '💀';
-
-                // Wake up alert
-                setTimeout(() => {
-                    document.getElementById('wake-up-alert').classList.add('show');
-                    playAlarm();
-
-                    // Stop sleeper's zzz animation
-                    const sleeper = document.getElementById('sleeper');
-                    sleeper.querySelectorAll('.sleeper-zzz').forEach(z => z.style.animation = 'none');
-
-                    // Transition to search phase
-                    setTimeout(() => {
-                        document.getElementById('wake-up-alert').classList.remove('show');
-                        runSearchPhase();
-                    }, 2000);
-                }, 500);
+                lowBatteryWarning.classList.add('show');
+                playAlarm(); // Warning beep
             }, 2000);
+
+            // After 4 seconds, phone dies
+            setTimeout(() => {
+                clearInterval(callTimerInterval);
+                playPhoneDie();
+                phoneDyingOverlay.classList.add('show');
+
+                // Small phone also dies
+                phoneScreenSmall.classList.remove('on-call');
+                phoneScreenSmall.classList.add('dead');
+                phoneScreenSmall.querySelector('.phone-battery-icon').textContent = '💀';
+            }, 4000);
+
+            // After 5.5 seconds, show disconnected message
+            setTimeout(() => {
+                callDisconnectedMsg.classList.add('show');
+            }, 5500);
+
+            // After 7.5 seconds, hide floating phone and transition to search
+            setTimeout(() => {
+                callDyingScreen.classList.remove('show');
+                stage2Phase = 'wakeup';
+                runWakeUpPhase();
+            }, 7500);
+        }
+
+        // Phase A: Wake up and realize phone is dead (phone already died in intro)
+        function runWakeUpPhase() {
+            // Phone is already dead from intro phase
+            // Brief pause then show wake up alert
+            setTimeout(() => {
+                document.getElementById('wake-up-alert').classList.add('show');
+                playAlarm();
+
+                // Stop sleeper's zzz animation
+                const sleeper = document.getElementById('sleeper');
+                sleeper.querySelectorAll('.sleeper-zzz').forEach(z => z.style.animation = 'none');
+
+                // Transition to search phase
+                setTimeout(() => {
+                    document.getElementById('wake-up-alert').classList.remove('show');
+                    runSearchPhase();
+                }, 2000);
+            }, 500);
         }
 
         // Phase B: Search for charger
@@ -2974,9 +3424,22 @@
             callAttempts = 0;
             searchedItems.clear();
 
-            // Reset phone
+            // Clear any running timer
+            if (callTimerInterval) {
+                clearInterval(callTimerInterval);
+                callTimerInterval = null;
+            }
+
+            // Reset call dying intro screen
+            document.getElementById('call-dying-screen').classList.remove('show');
+            document.getElementById('low-battery-warning').classList.remove('show');
+            document.getElementById('phone-dying-overlay').classList.remove('show');
+            document.getElementById('call-disconnected-msg').classList.remove('show');
+            document.getElementById('call-timer').textContent = '02:47:13';
+
+            // Reset phone on nightstand
             const phoneScreen = document.getElementById('phone-screen');
-            phoneScreen.classList.remove('dying', 'dead');
+            phoneScreen.classList.remove('dying', 'dead', 'on-call');
             phoneScreen.querySelector('.phone-battery-icon').textContent = '🔋';
 
             // Reset sleeper
