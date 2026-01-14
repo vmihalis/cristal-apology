@@ -499,6 +499,831 @@
             box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
         }
 
+        /* ============ STAGE 2: PHONE CHARGING ============ */
+        #phone-stage {
+            background: linear-gradient(180deg, #0a0a12 0%, #12121f 50%, #0a0a12 100%);
+        }
+
+        .bedroom {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Moonlight effect */
+        .moonlight {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 70%;
+            background: radial-gradient(ellipse at top right, rgba(200, 210, 255, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Window */
+        .bedroom-window {
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            width: 120px;
+            height: 150px;
+            background: linear-gradient(180deg, #1a1a3a 0%, #252550 100%);
+            border: 8px solid #2a2a3a;
+            border-radius: 8px;
+            box-shadow: inset 0 0 30px rgba(150, 170, 255, 0.1);
+        }
+
+        .bedroom-window::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: #2a2a3a;
+        }
+
+        .bedroom-window::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: #2a2a3a;
+            transform: translateX(-50%);
+        }
+
+        .window-stars {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+        }
+
+        .window-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        /* Bed */
+        .bed {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 120px;
+        }
+
+        .mattress {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, #3a3a5a 0%, #2a2a4a 100%);
+            border-radius: 10px;
+        }
+
+        .blanket {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(180deg, #6a5acd 0%, #5a4abd 100%);
+            border-radius: 15px 15px 10px 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .pillow {
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+            width: 80px;
+            height: 40px;
+            background: linear-gradient(180deg, #e8e8f0 0%, #d0d0e0 100%);
+            border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sleeping character (you) */
+        .sleeper {
+            position: absolute;
+            bottom: 55px;
+            left: 60px;
+            z-index: 2;
+        }
+
+        .sleeper-head {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(180deg, #f5d0c5 0%, #e8c0b5 100%);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .sleeper-hair {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            height: 30px;
+            background: #3a3a4a;
+            border-radius: 25px 25px 0 0;
+        }
+
+        .sleeper-eyes {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .sleeper-eye {
+            width: 8px;
+            height: 2px;
+            background: #3a3a4a;
+            border-radius: 2px;
+        }
+
+        .sleeper-zzz {
+            position: absolute;
+            top: -20px;
+            right: -30px;
+            font-size: 16px;
+            color: #c4b5fd;
+            opacity: 0;
+            animation: floatZ 2s ease-in-out infinite;
+        }
+
+        .sleeper-zzz:nth-child(2) { animation-delay: 0.5s; right: -45px; top: -35px; font-size: 14px; }
+        .sleeper-zzz:nth-child(3) { animation-delay: 1s; right: -55px; top: -50px; font-size: 12px; }
+
+        /* Nightstand */
+        .nightstand {
+            position: absolute;
+            bottom: 15%;
+            right: 20%;
+            width: 80px;
+            height: 70px;
+            background: linear-gradient(180deg, #4a4a5a 0%, #3a3a4a 100%);
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nightstand-drawer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 20px;
+            background: #3a3a4a;
+            border-radius: 3px;
+            border: 1px solid #2a2a3a;
+        }
+
+        .nightstand-drawer::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 4px;
+            background: #5a5a6a;
+            border-radius: 2px;
+        }
+
+        /* Phone on nightstand */
+        .phone-on-stand {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 55px;
+            background: linear-gradient(180deg, #1a1a2a 0%, #0a0a1a 100%);
+            border-radius: 8px;
+            border: 2px solid #2a2a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .phone-screen-glow {
+            width: 28px;
+            height: 45px;
+            background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+        }
+
+        .phone-screen-glow.dying {
+            animation: phoneDying 2s ease-out forwards;
+        }
+
+        .phone-screen-glow.dead {
+            background: #1a1a2a;
+            box-shadow: none;
+        }
+
+        @keyframes phoneDying {
+            0% { background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%); box-shadow: 0 0 20px rgba(74, 144, 226, 0.4); }
+            30% { background: linear-gradient(180deg, #e24a4a 0%, #bd3535 100%); box-shadow: 0 0 20px rgba(226, 74, 74, 0.4); }
+            60% { background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%); box-shadow: 0 0 5px rgba(100, 100, 100, 0.2); }
+            100% { background: #1a1a2a; box-shadow: none; }
+        }
+
+        .phone-battery-icon {
+            font-size: 14px;
+        }
+
+        /* Wake up exclamation */
+        .wake-up-alert {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            color: #ff6b6b;
+            opacity: 0;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
+            z-index: 20;
+        }
+
+        .wake-up-alert.show {
+            animation: alertPop 0.5s ease-out forwards;
+        }
+
+        @keyframes alertPop {
+            0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+
+        /* Search phase */
+        .search-prompt {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.3rem;
+            color: #e9d5ff;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            z-index: 20;
+        }
+
+        .search-prompt.show {
+            opacity: 1;
+        }
+
+        .search-feedback {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.1rem;
+            color: #f9a8d4;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 20;
+        }
+
+        .search-feedback.show {
+            opacity: 1;
+        }
+
+        /* Searchable objects */
+        .searchable {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .searchable:hover {
+            filter: brightness(1.3);
+        }
+
+        .searchable.searched {
+            pointer-events: none;
+        }
+
+        .searchable.searched::after {
+            content: '✗';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: rgba(255, 100, 100, 0.8);
+        }
+
+        .searchable.found::after {
+            content: '✓';
+            color: rgba(100, 255, 150, 0.9);
+        }
+
+        .search-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255, 255, 200, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .searchable:hover .search-glow {
+            opacity: 1;
+        }
+
+        /* Desk lamp */
+        .desk-lamp {
+            bottom: calc(15% + 70px);
+            right: calc(20% + 60px);
+            width: 40px;
+            height: 60px;
+        }
+
+        .lamp-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 8px;
+            background: #5a5a6a;
+            border-radius: 3px;
+        }
+
+        .lamp-stem {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 30px;
+            background: #4a4a5a;
+        }
+
+        .lamp-shade {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 25px;
+            background: linear-gradient(180deg, #8a7acc 0%, #6a5aaa 100%);
+            border-radius: 5px 5px 15px 15px;
+        }
+
+        /* Book on floor */
+        .floor-book {
+            bottom: 8%;
+            left: 25%;
+            width: 50px;
+            height: 35px;
+            background: linear-gradient(90deg, #cc7a7a 0%, #aa5a5a 100%);
+            border-radius: 3px;
+            transform: rotate(-15deg);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .floor-book::before {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            bottom: 3px;
+            width: 3px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Slippers */
+        .slippers {
+            bottom: 5%;
+            left: 40%;
+            width: 60px;
+            height: 30px;
+        }
+
+        .slipper {
+            position: absolute;
+            width: 28px;
+            height: 20px;
+            background: linear-gradient(180deg, #7accc4 0%, #5aaaa2 100%);
+            border-radius: 15px 15px 10px 10px;
+        }
+
+        .slipper:first-child { left: 0; transform: rotate(-10deg); }
+        .slipper:last-child { right: 0; transform: rotate(5deg); }
+
+        /* Plant */
+        .plant {
+            bottom: calc(15% + 70px);
+            left: 15%;
+            width: 50px;
+            height: 70px;
+        }
+
+        .plant-pot {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 30px;
+            background: linear-gradient(180deg, #cc9a6a 0%, #aa7a4a 100%);
+            border-radius: 3px 3px 8px 8px;
+        }
+
+        .plant-leaves {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 35px;
+        }
+
+        /* Clothes pile */
+        .clothes-pile {
+            bottom: 10%;
+            right: 10%;
+            width: 60px;
+            height: 40px;
+            background: linear-gradient(180deg, #6a6acc 0%, #8a7acc 50%, #5a5aaa 100%);
+            border-radius: 20px 25px 15px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Charger (hidden under nightstand) */
+        .charger-spot {
+            bottom: calc(15% - 15px);
+            right: calc(20% + 20px);
+            width: 50px;
+            height: 25px;
+        }
+
+        .charger-cable {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 8px;
+            background: #2a2a3a;
+            border-radius: 4px;
+        }
+
+        .charger-plug {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(180deg, #4a4a5a 0%, #3a3a4a 100%);
+            border-radius: 3px;
+        }
+
+        /* ============ CHARGING PHASE ============ */
+        .charging-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+            z-index: 30;
+        }
+
+        .charging-screen.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .big-phone {
+            width: 180px;
+            height: 320px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-radius: 25px;
+            border: 4px solid #3a3a4a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .big-phone::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            width: 60px;
+            height: 6px;
+            background: #3a3a4a;
+            border-radius: 3px;
+        }
+
+        .charging-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            animation: chargePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes chargePulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .battery-visual {
+            width: 80px;
+            height: 140px;
+            background: #1a1a2a;
+            border: 3px solid #5a5a6a;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .battery-visual::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 8px;
+            background: #5a5a6a;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .battery-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+            transition: height 0.3s ease;
+        }
+
+        .battery-fill.low {
+            background: linear-gradient(180deg, #f87171 0%, #ef4444 100%);
+        }
+
+        .battery-percentage {
+            font-size: 1.5rem;
+            color: #e9d5ff;
+            font-weight: 700;
+        }
+
+        .charging-message {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.1rem;
+            color: #c4b5fd;
+            text-align: center;
+            max-width: 300px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .charging-message.show {
+            opacity: 1;
+        }
+
+        .charging-cable {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 50px;
+            background: linear-gradient(180deg, #3a3a4a 0%, #2a2a3a 100%);
+            border-radius: 4px;
+        }
+
+        .charging-cable::after {
+            content: '⚡';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+        }
+
+        /* ============ CALLING PHASE ============ */
+        .calling-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+            z-index: 30;
+        }
+
+        .calling-screen.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .call-phone {
+            width: 200px;
+            height: 360px;
+            background: linear-gradient(180deg, #1a1a2a 0%, #0f0f1a 100%);
+            border-radius: 30px;
+            border: 4px solid #3a3a4a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .call-phone::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            width: 60px;
+            height: 6px;
+            background: #3a3a4a;
+            border-radius: 3px;
+        }
+
+        .contact-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f472b6 0%, #c084fc 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(244, 114, 182, 0.4);
+        }
+
+        .contact-name {
+            font-size: 1.5rem;
+            color: #fce7f3;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .call-status {
+            font-size: 1rem;
+            color: #a78bfa;
+            margin-bottom: 30px;
+            min-height: 24px;
+        }
+
+        .call-status.ringing {
+            animation: ringPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .call-actions {
+            display: flex;
+            gap: 40px;
+            margin-top: auto;
+        }
+
+        .call-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .call-btn.end-call {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .call-btn.retry-call {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+        }
+
+        .call-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .no-answer-msg {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            color: #f9a8d4;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .no-answer-msg.show {
+            opacity: 1;
+        }
+
+        /* Morning light transition */
+        .morning-light {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 200, 150, 0) 0%, rgba(255, 200, 150, 0) 100%);
+            pointer-events: none;
+            transition: background 3s ease;
+            z-index: 5;
+        }
+
+        .morning-light.rising {
+            background: linear-gradient(180deg, rgba(255, 200, 150, 0.15) 0%, rgba(255, 180, 130, 0.1) 50%, rgba(255, 200, 150, 0) 100%);
+        }
+
+        /* Stage 2 transition message */
+        .stage-transition {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .stage-transition.show {
+            animation: fadeInOut 4s ease forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .stage-transition-text {
+            font-size: 1.5rem;
+            color: #fce7f3;
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            line-height: 1.8;
+        }
+
         /* ============ FINAL SCREEN ============ */
         #final-screen {
             text-align: center;
@@ -742,6 +1567,134 @@
         <div class="message-card" id="message-card">
             <p class="message-text" id="message-text"></p>
             <button class="next-btn" onclick="nextSheep()">Next Sheep</button>
+        </div>
+    </div>
+
+    <!-- ============ STAGE 2: PHONE CHARGING ============ -->
+    <div class="scene" id="phone-stage">
+        <div class="bedroom">
+            <!-- Morning light overlay -->
+            <div class="morning-light" id="morning-light"></div>
+
+            <!-- Moonlight glow -->
+            <div class="moonlight"></div>
+
+            <!-- Window with stars -->
+            <div class="bedroom-window">
+                <div class="window-stars">
+                    <div class="window-star" style="top: 20%; left: 30%;"></div>
+                    <div class="window-star" style="top: 40%; left: 60%;"></div>
+                    <div class="window-star" style="top: 15%; left: 80%;"></div>
+                    <div class="window-star" style="top: 60%; left: 20%;"></div>
+                    <div class="window-star" style="top: 70%; left: 70%;"></div>
+                </div>
+            </div>
+
+            <!-- Bed with sleeper -->
+            <div class="bed">
+                <div class="mattress"></div>
+                <div class="blanket"></div>
+                <div class="pillow"></div>
+                <div class="sleeper" id="sleeper">
+                    <div class="sleeper-head">
+                        <div class="sleeper-hair"></div>
+                        <div class="sleeper-eyes">
+                            <div class="sleeper-eye"></div>
+                            <div class="sleeper-eye"></div>
+                        </div>
+                    </div>
+                    <div class="sleeper-zzz">Z</div>
+                    <div class="sleeper-zzz">z</div>
+                    <div class="sleeper-zzz">z</div>
+                </div>
+            </div>
+
+            <!-- Nightstand with phone -->
+            <div class="nightstand">
+                <div class="nightstand-drawer"></div>
+                <div class="phone-on-stand" id="phone-on-stand">
+                    <div class="phone-screen-glow" id="phone-screen">
+                        <span class="phone-battery-icon">🔋</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Searchable objects -->
+            <div class="searchable desk-lamp" data-item="lamp" id="search-lamp">
+                <div class="lamp-shade"></div>
+                <div class="lamp-stem"></div>
+                <div class="lamp-base"></div>
+                <div class="search-glow"></div>
+            </div>
+
+            <div class="searchable floor-book" data-item="book" id="search-book">
+                <div class="search-glow"></div>
+            </div>
+
+            <div class="searchable slippers" data-item="slippers" id="search-slippers">
+                <div class="slipper"></div>
+                <div class="slipper"></div>
+                <div class="search-glow"></div>
+            </div>
+
+            <div class="searchable plant" data-item="plant" id="search-plant">
+                <div class="plant-leaves">🌱</div>
+                <div class="plant-pot"></div>
+                <div class="search-glow"></div>
+            </div>
+
+            <div class="searchable clothes-pile" data-item="clothes" id="search-clothes">
+                <div class="search-glow"></div>
+            </div>
+
+            <div class="searchable charger-spot" data-item="charger" id="search-charger">
+                <div class="charger-cable"></div>
+                <div class="charger-plug"></div>
+                <div class="search-glow"></div>
+            </div>
+
+            <!-- Wake up alert -->
+            <div class="wake-up-alert" id="wake-up-alert">!! OH NO !!</div>
+
+            <!-- Search prompt -->
+            <div class="search-prompt" id="search-prompt">
+                Find the charger! Tap around the room...
+            </div>
+
+            <!-- Search feedback -->
+            <div class="search-feedback" id="search-feedback"></div>
+        </div>
+
+        <!-- Charging screen overlay -->
+        <div class="charging-screen" id="charging-screen">
+            <div class="big-phone">
+                <div class="charging-icon">🔌</div>
+                <div class="battery-visual">
+                    <div class="battery-fill low" id="battery-fill"></div>
+                </div>
+                <div class="battery-percentage"><span id="battery-percent">0</span>%</div>
+                <div class="charging-cable"></div>
+            </div>
+            <div class="charging-message" id="charging-message"></div>
+        </div>
+
+        <!-- Calling screen overlay -->
+        <div class="calling-screen" id="calling-screen">
+            <div class="call-phone">
+                <div class="contact-photo">💕</div>
+                <div class="contact-name">Cristal</div>
+                <div class="call-status" id="call-status">Calling...</div>
+                <div class="call-actions">
+                    <button class="call-btn end-call" id="end-call-btn" onclick="endCallAttempt()">📵</button>
+                    <button class="call-btn retry-call" id="retry-call-btn" onclick="retryCall()" style="display: none;">📞</button>
+                </div>
+            </div>
+            <div class="no-answer-msg" id="no-answer-msg"></div>
+        </div>
+
+        <!-- Stage transition message -->
+        <div class="stage-transition" id="stage-transition">
+            <p class="stage-transition-text" id="stage-transition-text"></p>
         </div>
     </div>
 
@@ -1533,11 +2486,9 @@
             document.getElementById('sheep-area').innerHTML = '';
             activeSheep.clear();
 
+            // Transition to Stage 2 instead of final screen
             document.getElementById('game-screen').classList.remove('active');
-            document.getElementById('final-screen').classList.add('active');
-            createFloatingHearts();
-            playCelebration();
-            setTimeout(startLullaby, 2000);
+            startStage2();
         }
 
         function createFloatingHearts() {
@@ -1565,7 +2516,7 @@
             document.getElementById('sheep-area').innerHTML = '';
             activeSheep.clear();
 
-            // Reset state
+            // Reset Stage 1 state
             sheepCaught = 0;
             gameStarted = false;
             sheepIdCounter = 0;
@@ -1576,9 +2527,488 @@
             // Hide message card if visible
             document.getElementById('message-card').classList.remove('show');
 
-            // Switch screens
+            // Reset Stage 2
+            resetStage2();
+
+            // Switch screens (hide all, show title)
             document.getElementById('final-screen').classList.remove('active');
+            document.getElementById('phone-stage').classList.remove('active');
+            document.getElementById('game-screen').classList.remove('active');
             document.getElementById('title-screen').classList.add('active');
+        }
+
+        // ============ STAGE 2: PHONE CHARGING MINI-GAME ============
+
+        // Stage 2 State
+        let stage2Phase = 'idle'; // idle, wakeup, search, charging, calling, complete
+        let callAttempts = 0;
+        const MAX_CALL_ATTEMPTS = 3;
+        let searchedItems = new Set();
+
+        // Search feedback messages for wrong items
+        const searchFeedback = {
+            lamp: "Not under the lamp...",
+            book: "Nope, just a book...",
+            slippers: "Just my slippers...",
+            plant: "Behind the plant? No...",
+            clothes: "Not in my clothes...",
+            charger: "Found it!"
+        };
+
+        // Sad messages during charging
+        const chargingMessages = [
+            "Cristal turns over in bed, reaching for her phone...",
+            "She wonders why it got so quiet...",
+            "The silence feels wrong without your voice...",
+            "She pulls the blanket closer, feeling alone...",
+            "Her phone shows 'Call Ended'...",
+            "She waits, hoping you'll call back..."
+        ];
+
+        // No answer messages
+        const noAnswerMessages = [
+            "No answer... she must be in deep sleep 😢",
+            "Still no answer... please pick up...",
+            "She didn't hear it... I'm so sorry, Cristal..."
+        ];
+
+        // Stage 2 Sound Effects
+        function playAlarm() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Jarring wake-up beeps
+            for (let i = 0; i < 3; i++) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(800, now + i * 0.15);
+                gain.gain.setValueAtTime(0.1, now + i * 0.15);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.15 + 0.1);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.15);
+                osc.stop(now + i * 0.15 + 0.1);
+            }
+        }
+
+        function playPhoneDie() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Sad descending tone
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.8);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.8);
+        }
+
+        function playSearchTap() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(300, now);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
+
+        function playFoundCharger() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Happy ascending ding
+            [400, 500, 600, 800].forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0, now + i * 0.08);
+                gain.gain.linearRampToValueAtTime(0.12, now + i * 0.08 + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.08);
+                osc.stop(now + i * 0.08 + 0.3);
+            });
+        }
+
+        function playCharging() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.setValueAtTime(700, now + 0.1);
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.2);
+        }
+
+        function playRinging() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Phone ring tone
+            for (let i = 0; i < 2; i++) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, now + i * 0.3);
+                osc.frequency.setValueAtTime(480, now + i * 0.3 + 0.15);
+                gain.gain.setValueAtTime(0.1, now + i * 0.3);
+                gain.gain.setValueAtTime(0.1, now + i * 0.3 + 0.25);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.3 + 0.28);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.3);
+                osc.stop(now + i * 0.3 + 0.3);
+            }
+        }
+
+        function playNoAnswer() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Sad disconnection tone
+            [400, 350, 300].forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0, now + i * 0.2);
+                gain.gain.linearRampToValueAtTime(0.1, now + i * 0.2 + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.2 + 0.18);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.2);
+                osc.stop(now + i * 0.2 + 0.2);
+            });
+        }
+
+        function playSadChord() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Minor chord (sad)
+            const freqs = [220, 261.63, 329.63];
+            freqs.forEach((freq) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.08, now + 0.1);
+                gain.gain.setValueAtTime(0.08, now + 1.5);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 3);
+            });
+        }
+
+        // Start Stage 2
+        function startStage2() {
+            document.getElementById('phone-stage').classList.add('active');
+            stage2Phase = 'wakeup';
+            stopAmbientSounds();
+
+            // Phase A: Wake up animation
+            setTimeout(runWakeUpPhase, 500);
+        }
+
+        // Phase A: Wake up and see dead phone
+        function runWakeUpPhase() {
+            const phoneScreen = document.getElementById('phone-screen');
+
+            // Phone dies animation
+            phoneScreen.classList.add('dying');
+            playPhoneDie();
+
+            // After phone dies, show alert
+            setTimeout(() => {
+                phoneScreen.classList.remove('dying');
+                phoneScreen.classList.add('dead');
+                phoneScreen.querySelector('.phone-battery-icon').textContent = '💀';
+
+                // Wake up alert
+                setTimeout(() => {
+                    document.getElementById('wake-up-alert').classList.add('show');
+                    playAlarm();
+
+                    // Stop sleeper's zzz animation
+                    const sleeper = document.getElementById('sleeper');
+                    sleeper.querySelectorAll('.sleeper-zzz').forEach(z => z.style.animation = 'none');
+
+                    // Transition to search phase
+                    setTimeout(() => {
+                        document.getElementById('wake-up-alert').classList.remove('show');
+                        runSearchPhase();
+                    }, 2000);
+                }, 500);
+            }, 2000);
+        }
+
+        // Phase B: Search for charger
+        function runSearchPhase() {
+            stage2Phase = 'search';
+            document.getElementById('search-prompt').classList.add('show');
+
+            // Set up click handlers for searchable items
+            document.querySelectorAll('.searchable').forEach(item => {
+                item.addEventListener('click', handleSearchClick);
+            });
+        }
+
+        function handleSearchClick(e) {
+            if (stage2Phase !== 'search') return;
+
+            const item = e.currentTarget;
+            const itemType = item.dataset.item;
+
+            if (searchedItems.has(itemType)) return;
+            searchedItems.add(itemType);
+
+            playSearchTap();
+
+            // Show feedback
+            const feedback = document.getElementById('search-feedback');
+            feedback.textContent = searchFeedback[itemType];
+            feedback.classList.add('show');
+
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 1500);
+
+            if (itemType === 'charger') {
+                // Found it!
+                item.classList.add('searched', 'found');
+                playFoundCharger();
+                document.getElementById('search-prompt').classList.remove('show');
+
+                setTimeout(() => {
+                    runChargingPhase();
+                }, 1500);
+            } else {
+                item.classList.add('searched');
+            }
+        }
+
+        // Phase C: Charging with sad messages
+        function runChargingPhase() {
+            stage2Phase = 'charging';
+
+            // Hide bedroom, show charging screen
+            document.getElementById('charging-screen').classList.add('show');
+
+            let currentPercent = 0;
+            let messageIndex = 0;
+            const batteryFill = document.getElementById('battery-fill');
+            const batteryPercent = document.getElementById('battery-percent');
+            const chargingMessage = document.getElementById('charging-message');
+
+            // Charging animation
+            const chargeInterval = setInterval(() => {
+                currentPercent++;
+                batteryFill.style.height = currentPercent + '%';
+                batteryPercent.textContent = currentPercent;
+
+                if (currentPercent <= 10) {
+                    batteryFill.classList.add('low');
+                } else {
+                    batteryFill.classList.remove('low');
+                }
+
+                // Play charging sound occasionally
+                if (currentPercent % 5 === 0) {
+                    playCharging();
+                }
+
+                // Show messages at certain percentages
+                if (currentPercent === 3 || currentPercent === 8 || currentPercent === 13 ||
+                    currentPercent === 18 || currentPercent === 23 || currentPercent === 28) {
+                    if (messageIndex < chargingMessages.length) {
+                        chargingMessage.textContent = chargingMessages[messageIndex];
+                        chargingMessage.classList.add('show');
+                        messageIndex++;
+
+                        setTimeout(() => {
+                            chargingMessage.classList.remove('show');
+                        }, 2500);
+                    }
+                }
+
+                // Stop at 35% - enough to make a call
+                if (currentPercent >= 35) {
+                    clearInterval(chargeInterval);
+
+                    setTimeout(() => {
+                        chargingMessage.textContent = "Finally! Enough to make a call...";
+                        chargingMessage.classList.add('show');
+                        playSparkle();
+
+                        setTimeout(() => {
+                            chargingMessage.classList.remove('show');
+                            document.getElementById('charging-screen').classList.remove('show');
+                            runCallingPhase();
+                        }, 2000);
+                    }, 500);
+                }
+            }, 150); // Speed of charging
+        }
+
+        // Phase D: Calling with no answer
+        function runCallingPhase() {
+            stage2Phase = 'calling';
+            callAttempts = 0;
+
+            document.getElementById('calling-screen').classList.add('show');
+            startCallAttempt();
+        }
+
+        function startCallAttempt() {
+            const callStatus = document.getElementById('call-status');
+            const noAnswerMsg = document.getElementById('no-answer-msg');
+            const retryBtn = document.getElementById('retry-call-btn');
+            const endBtn = document.getElementById('end-call-btn');
+
+            callStatus.textContent = 'Calling...';
+            callStatus.classList.add('ringing');
+            noAnswerMsg.classList.remove('show');
+            retryBtn.style.display = 'none';
+            endBtn.style.display = 'flex';
+
+            // Play ringing sounds
+            let ringCount = 0;
+            const ringInterval = setInterval(() => {
+                playRinging();
+                ringCount++;
+
+                if (ringCount >= 4) {
+                    clearInterval(ringInterval);
+                    // No answer
+                    callStatus.classList.remove('ringing');
+                    callStatus.textContent = 'No answer';
+                    playNoAnswer();
+
+                    callAttempts++;
+
+                    setTimeout(() => {
+                        noAnswerMsg.textContent = noAnswerMessages[Math.min(callAttempts - 1, noAnswerMessages.length - 1)];
+                        noAnswerMsg.classList.add('show');
+
+                        if (callAttempts < MAX_CALL_ATTEMPTS) {
+                            retryBtn.style.display = 'flex';
+                            endBtn.style.display = 'none';
+                        } else {
+                            // Final attempt failed
+                            setTimeout(() => {
+                                endStage2();
+                            }, 2500);
+                        }
+                    }, 500);
+                }
+            }, 1200);
+        }
+
+        function retryCall() {
+            playPop();
+            startCallAttempt();
+        }
+
+        function endCallAttempt() {
+            playPop();
+            endStage2();
+        }
+
+        function endStage2() {
+            stage2Phase = 'complete';
+
+            // Show morning light
+            document.getElementById('morning-light').classList.add('rising');
+
+            // Hide calling screen
+            document.getElementById('calling-screen').classList.remove('show');
+
+            // Show transition message
+            const transition = document.getElementById('stage-transition');
+            const transitionText = document.getElementById('stage-transition-text');
+            transitionText.innerHTML = "She slept alone that night...<br>cold and sad...<br>waiting for a call that never came...";
+            transition.classList.add('show');
+
+            playSadChord();
+
+            // Transition to final screen
+            setTimeout(() => {
+                transition.classList.remove('show');
+                document.getElementById('phone-stage').classList.remove('active');
+                document.getElementById('final-screen').classList.add('active');
+                createFloatingHearts();
+                playCelebration();
+                setTimeout(startLullaby, 2000);
+            }, 5000);
+        }
+
+        // Reset Stage 2 state
+        function resetStage2() {
+            stage2Phase = 'idle';
+            callAttempts = 0;
+            searchedItems.clear();
+
+            // Reset phone
+            const phoneScreen = document.getElementById('phone-screen');
+            phoneScreen.classList.remove('dying', 'dead');
+            phoneScreen.querySelector('.phone-battery-icon').textContent = '🔋';
+
+            // Reset sleeper
+            const sleeper = document.getElementById('sleeper');
+            sleeper.querySelectorAll('.sleeper-zzz').forEach(z => z.style.animation = '');
+
+            // Reset UI elements
+            document.getElementById('wake-up-alert').classList.remove('show');
+            document.getElementById('search-prompt').classList.remove('show');
+            document.getElementById('search-feedback').classList.remove('show');
+            document.getElementById('charging-screen').classList.remove('show');
+            document.getElementById('calling-screen').classList.remove('show');
+            document.getElementById('stage-transition').classList.remove('show');
+            document.getElementById('morning-light').classList.remove('rising');
+
+            // Reset searchable items
+            document.querySelectorAll('.searchable').forEach(item => {
+                item.classList.remove('searched', 'found');
+            });
+
+            // Reset battery
+            document.getElementById('battery-fill').style.height = '0%';
+            document.getElementById('battery-fill').classList.add('low');
+            document.getElementById('battery-percent').textContent = '0';
+            document.getElementById('charging-message').classList.remove('show');
+
+            // Reset call screen
+            document.getElementById('call-status').textContent = 'Calling...';
+            document.getElementById('call-status').classList.remove('ringing');
+            document.getElementById('no-answer-msg').classList.remove('show');
+            document.getElementById('retry-call-btn').style.display = 'none';
+            document.getElementById('end-call-btn').style.display = 'flex';
         }
 
         // Initialize on load
