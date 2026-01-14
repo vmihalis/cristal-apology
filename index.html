@@ -46,6 +46,43 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
+        /* ============ SHOOTING STARS ============ */
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+            animation: shoot var(--duration, 1s) linear forwards;
+            transform: rotate(var(--angle, 35deg));
+        }
+
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: var(--tail-length, 80px);
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));
+            right: 100%;
+        }
+
+        @keyframes shoot {
+            0% {
+                opacity: 1;
+                transform: rotate(var(--angle, 35deg)) translateX(0);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(var(--angle, 35deg)) translateX(var(--distance, 400px));
+            }
+        }
+
         /* ============ MOON ============ */
         .moon {
             position: fixed;
@@ -1205,6 +1242,7 @@
         // ============ INITIALIZATION ============
         function init() {
             createStars();
+            startShootingStars();
             updateSoundIcon();
         }
 
@@ -1223,6 +1261,47 @@
                 star.style.setProperty('--delay', (Math.random() * 5) + 's');
                 container.appendChild(star);
             }
+        }
+
+        // ============ SHOOTING STARS ============
+        function startShootingStars() {
+            // Spawn a shooting star every 3-8 seconds
+            function scheduleNext() {
+                const delay = 3000 + Math.random() * 5000;
+                setTimeout(() => {
+                    createShootingStar();
+                    scheduleNext();
+                }, delay);
+            }
+            // Start with one after a short delay
+            setTimeout(createShootingStar, 2000);
+            scheduleNext();
+        }
+
+        function createShootingStar() {
+            const container = document.getElementById('stars');
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+
+            // Random starting position (upper-left portion of sky)
+            star.style.left = (5 + Math.random() * 50) + '%';
+            star.style.top = (5 + Math.random() * 25) + '%';
+
+            // Random properties for variety
+            const duration = 0.6 + Math.random() * 0.5;
+            const distance = 300 + Math.random() * 300;
+            const tailLength = 80 + Math.random() * 80;
+            const angle = 25 + Math.random() * 30; // 25 to 55 degrees (diagonal down-right)
+
+            star.style.setProperty('--duration', duration + 's');
+            star.style.setProperty('--distance', distance + 'px');
+            star.style.setProperty('--tail-length', tailLength + 'px');
+            star.style.setProperty('--angle', angle + 'deg');
+
+            container.appendChild(star);
+
+            // Remove after animation completes
+            setTimeout(() => star.remove(), duration * 1000 + 100);
         }
 
         // ============ GAME FLOW ============
