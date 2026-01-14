@@ -68,6 +68,36 @@
             50% { box-shadow: 0 0 60px rgba(254, 249, 195, 0.7), 0 0 100px rgba(254, 249, 195, 0.4), inset -10px -10px 20px rgba(251, 191, 36, 0.3); }
         }
 
+        /* ============ SOUND TOGGLE ============ */
+        .sound-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(30, 30, 50, 0.8);
+            border: 2px solid rgba(192, 132, 252, 0.4);
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .sound-toggle:hover {
+            transform: scale(1.1);
+            border-color: rgba(244, 114, 182, 0.6);
+            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.3);
+        }
+
+        .sound-toggle.off {
+            opacity: 0.6;
+        }
+
         /* ============ SCENES ============ */
         .scene {
             position: fixed;
@@ -569,6 +599,11 @@
     <!-- Moon -->
     <div class="moon"></div>
 
+    <!-- Sound Toggle -->
+    <button class="sound-toggle" id="sound-toggle" onclick="toggleSound()">
+        <span id="sound-icon">🔊</span>
+    </button>
+
     <!-- ============ TITLE SCREEN ============ -->
     <div class="scene active" id="title-screen">
         <div class="zzz-container">
@@ -849,9 +884,259 @@
         let sheepCaught = false;
         let gameStarted = false;
 
+        // ============ AUDIO SYSTEM ============
+        let audioCtx = null;
+        let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+        let lullabyInterval = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            updateSoundIcon();
+            if (soundEnabled) {
+                initAudio();
+                playPop();
+            } else {
+                stopLullaby();
+            }
+        }
+
+        function updateSoundIcon() {
+            const icon = document.getElementById('sound-icon');
+            const btn = document.getElementById('sound-toggle');
+            if (soundEnabled) {
+                icon.textContent = '🔊';
+                btn.classList.remove('off');
+            } else {
+                icon.textContent = '🔇';
+                btn.classList.add('off');
+            }
+        }
+
+        // Soft chime - bell/xylophone
+        function playChime() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            [523.25, 659.25, 783.99].forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0, now + i * 0.1);
+                gain.gain.linearRampToValueAtTime(0.15, now + i * 0.1 + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.8);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.1);
+                osc.stop(now + i * 0.1 + 0.8);
+            });
+        }
+
+        // Bouncy boing sound
+        function playBoing() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
+            osc.frequency.exponentialRampToValueAtTime(200, now + 0.25);
+
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.3);
+        }
+
+        // Cute sheep baa
+        function playBaa() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Main bleat tone
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220, now);
+            osc.frequency.linearRampToValueAtTime(280, now + 0.1);
+            osc.frequency.linearRampToValueAtTime(200, now + 0.3);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(800, now);
+
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.15, now + 0.05);
+            gain.gain.linearRampToValueAtTime(0.1, now + 0.2);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.4);
+        }
+
+        // Magical sparkle
+        function playSparkle() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            const notes = [880, 1108.73, 1318.51, 1567.98, 2093];
+            notes.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0, now + i * 0.05);
+                gain.gain.linearRampToValueAtTime(0.08, now + i * 0.05 + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.05);
+                osc.stop(now + i * 0.05 + 0.3);
+            });
+        }
+
+        // Soft whoosh
+        function playWhoosh() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            const bufferSize = audioCtx.sampleRate * 0.3;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+            }
+
+            const noise = audioCtx.createBufferSource();
+            const filter = audioCtx.createBiquadFilter();
+            const gain = audioCtx.createGain();
+
+            noise.buffer = buffer;
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(1000, now);
+            filter.frequency.exponentialRampToValueAtTime(300, now + 0.3);
+            filter.Q.setValueAtTime(1, now);
+
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start(now);
+        }
+
+        // Quick pop
+        function playPop() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(200, now + 0.1);
+
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
+
+        // Celebration chord
+        function playCelebration() {
+            if (!soundEnabled || !audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            // Warm major chord (C E G C)
+            const freqs = [261.63, 329.63, 392.00, 523.25];
+            freqs.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.12, now + 0.1);
+                gain.gain.setValueAtTime(0.12, now + 0.8);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 2);
+            });
+        }
+
+        // Gentle lullaby loop
+        function startLullaby() {
+            if (!soundEnabled || !audioCtx) return;
+
+            // Pentatonic melody notes (C D E G A)
+            const melody = [261.63, 293.66, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66];
+            let noteIndex = 0;
+
+            function playNote() {
+                if (!soundEnabled || !audioCtx) {
+                    stopLullaby();
+                    return;
+                }
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(melody[noteIndex], now);
+
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.06, now + 0.1);
+                gain.gain.setValueAtTime(0.06, now + 0.4);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.8);
+
+                noteIndex = (noteIndex + 1) % melody.length;
+            }
+
+            playNote();
+            lullabyInterval = setInterval(playNote, 800);
+        }
+
+        function stopLullaby() {
+            if (lullabyInterval) {
+                clearInterval(lullabyInterval);
+                lullabyInterval = null;
+            }
+        }
+
         // ============ INITIALIZATION ============
         function init() {
             createStars();
+            updateSoundIcon();
         }
 
         function createStars() {
@@ -873,6 +1158,8 @@
 
         // ============ GAME FLOW ============
         function startGame() {
+            initAudio();
+            playChime();
             document.getElementById('title-screen').classList.remove('active');
             document.getElementById('game-screen').classList.add('active');
             gameStarted = true;
@@ -900,6 +1187,7 @@
             // Start jump animation
             sheep.classList.add('jumping');
             sheepCaught = false;
+            playBoing();
         }
 
         function catchSheep() {
@@ -907,6 +1195,10 @@
 
             sheepCaught = true;
             const sheep = document.getElementById('sheep');
+
+            // Play sounds
+            playBaa();
+            setTimeout(playSparkle, 100);
 
             // Get current position for hearts burst
             const rect = sheep.getBoundingClientRect();
@@ -950,9 +1242,11 @@
             const messageText = document.getElementById('message-text');
             messageText.textContent = text;
             card.classList.add('show');
+            playWhoosh();
         }
 
         function nextSheep() {
+            playPop();
             const card = document.getElementById('message-card');
             card.classList.remove('show');
 
@@ -972,6 +1266,8 @@
             document.getElementById('game-screen').classList.remove('active');
             document.getElementById('final-screen').classList.add('active');
             createFloatingHearts();
+            playCelebration();
+            setTimeout(startLullaby, 2000);
         }
 
         function createFloatingHearts() {
@@ -990,6 +1286,10 @@
         }
 
         function replay() {
+            // Stop sounds
+            stopLullaby();
+            playPop();
+
             // Reset state
             currentSheep = 0;
             sheepCaught = false;
