@@ -626,14 +626,12 @@ function endStage2() {
 
     playSadChord();
 
-    // Transition to final screen
+    // Transition to puzzle stage (Stage 3)
     setTimeout(() => {
         transition.classList.remove('show');
         document.getElementById('phone-stage').classList.remove('active');
-        document.getElementById('final-screen').classList.add('active');
-        createFloatingHearts();
-        playCelebration();
-        setTimeout(startLullaby, 2000);
+        document.getElementById('puzzle-stage').classList.add('active');
+        startStage3();
     }, 5000);
 }
 

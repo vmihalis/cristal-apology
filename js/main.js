@@ -119,8 +119,12 @@ function replay() {
     // Reset Stage 2
     resetStage2();
 
+    // Reset Stage 3 (Puzzle)
+    resetStage3();
+
     // Switch screens (hide all, show title)
     document.getElementById('final-screen').classList.remove('active');
+    document.getElementById('puzzle-stage').classList.remove('active');
     document.getElementById('phone-stage').classList.remove('active');
     document.getElementById('game-screen').classList.remove('active');
     document.getElementById('title-screen').classList.add('active');
