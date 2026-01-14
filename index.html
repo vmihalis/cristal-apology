@@ -552,56 +552,116 @@
             z-index: 1;
         }
 
-        /* Window */
+        /* Window - positioned realistically on wall */
         .bedroom-window {
             position: absolute;
-            top: 10%;
-            right: 10%;
-            width: 120px;
-            height: 150px;
-            background: linear-gradient(180deg, #1a1a3a 0%, #252550 100%);
-            border: 8px solid #3a3545;
-            border-radius: 8px;
-            box-shadow: inset 0 0 30px rgba(150, 170, 255, 0.1);
+            top: 20%;
+            right: 12%;
+            width: 140px;
+            height: 180px;
+            background: linear-gradient(180deg, #0d0d25 0%, #1a1a40 30%, #252560 100%);
+            border: 6px solid #4a4555;
+            border-radius: 4px;
+            box-shadow:
+                inset 0 0 40px rgba(100, 130, 200, 0.15),
+                0 0 20px rgba(100, 130, 200, 0.1);
             z-index: 2;
+            overflow: hidden;
         }
 
+        /* Window sill */
         .bedroom-window::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: #2a2a3a;
+            bottom: -8px;
+            left: -10px;
+            right: -10px;
+            height: 12px;
+            background: linear-gradient(180deg, #5a5065 0%, #4a4555 100%);
+            border-radius: 2px;
+            z-index: 3;
         }
 
+        /* Window frame cross */
         .bedroom-window::after {
             content: '';
             position: absolute;
             left: 50%;
             top: 0;
             bottom: 0;
-            width: 6px;
-            background: #2a2a3a;
+            width: 5px;
+            background: #3a3a4a;
             transform: translateX(-50%);
+            box-shadow: 0 0 0 100px transparent, inset 0 0 0 0 transparent;
+        }
+
+        /* Horizontal window divider */
+        .window-divider {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: #3a3a4a;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        /* Curtains */
+        .window-curtain {
+            position: absolute;
+            top: 0;
+            width: 25px;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .window-curtain.left {
+            left: 0;
+            background: linear-gradient(90deg, rgba(90, 70, 100, 0.8) 0%, rgba(90, 70, 100, 0.3) 100%);
+            border-radius: 0 10px 5px 0;
+        }
+
+        .window-curtain.right {
+            right: 0;
+            background: linear-gradient(270deg, rgba(90, 70, 100, 0.8) 0%, rgba(90, 70, 100, 0.3) 100%);
+            border-radius: 10px 0 0 5px;
         }
 
         .window-stars {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
+            top: 8px;
+            left: 30px;
+            right: 30px;
+            bottom: 8px;
         }
 
         .window-star {
             position: absolute;
-            width: 3px;
-            height: 3px;
+            width: 2px;
+            height: 2px;
             background: white;
             border-radius: 50%;
             animation: twinkle 2s ease-in-out infinite;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .window-star.bright {
+            width: 3px;
+            height: 3px;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Moon visible through window */
+        .window-moon {
+            position: absolute;
+            top: 15%;
+            right: 20%;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 30% 30%, #fffef0 0%, #e8e4c8 50%, #d0cca0 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 255, 200, 0.4), 0 0 30px rgba(255, 255, 200, 0.2);
         }
 
         /* Bed */
@@ -1046,53 +1106,129 @@
 
         /* Book on floor - in front of bed */
         .floor-book {
-            bottom: 15%;
-            left: 45%;
-            width: 50px;
-            height: 35px;
-            background: linear-gradient(90deg, #cc7a7a 0%, #aa5a5a 100%);
-            border-radius: 3px;
-            transform: rotate(-15deg);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            bottom: 13%;
+            left: 46%;
+            width: 45px;
+            height: 32px;
+            background: linear-gradient(90deg, #8a5050 0%, #a06060 20%, #b07070 50%, #a06060 80%, #8a5050 100%);
+            border-radius: 2px 3px 3px 2px;
+            transform: rotate(-12deg);
+            box-shadow:
+                2px 2px 8px rgba(0, 0, 0, 0.4),
+                inset -2px 0 4px rgba(0, 0, 0, 0.2);
             z-index: 3;
         }
 
+        /* Book spine */
         .floor-book::before {
             content: '';
             position: absolute;
-            left: 3px;
-            top: 3px;
-            bottom: 3px;
-            width: 3px;
-            background: rgba(255, 255, 255, 0.2);
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(90deg, #6a3535 0%, #8a5050 100%);
+            border-radius: 2px 0 0 2px;
         }
 
-        /* Slippers - at foot of bed */
+        /* Book pages edge */
+        .floor-book::after {
+            content: '';
+            position: absolute;
+            right: 2px;
+            top: 3px;
+            bottom: 3px;
+            width: 2px;
+            background: repeating-linear-gradient(180deg,
+                #f5f0e5 0px,
+                #f5f0e5 1px,
+                #e8e3d8 1px,
+                #e8e3d8 2px);
+            border-radius: 0 1px 1px 0;
+        }
+
+        /* Slippers - cozy bedroom slippers at foot of bed */
         .slippers {
-            bottom: 12%;
-            left: 55%;
-            width: 60px;
-            height: 30px;
+            bottom: 11%;
+            left: 54%;
+            width: 80px;
+            height: 35px;
             z-index: 3;
         }
 
         .slipper {
             position: absolute;
-            width: 28px;
-            height: 20px;
-            background: linear-gradient(180deg, #7accc4 0%, #5aaaa2 100%);
-            border-radius: 15px 15px 10px 10px;
+            width: 35px;
+            height: 18px;
+            bottom: 0;
         }
 
-        .slipper:first-child { left: 0; transform: rotate(-10deg); }
-        .slipper:last-child { right: 0; transform: rotate(5deg); }
+        .slipper:first-child {
+            left: 0;
+            transform: rotate(-15deg);
+        }
 
-        /* Plant - moved to right side */
+        .slipper:last-child {
+            right: 0;
+            transform: rotate(8deg);
+        }
+
+        /* Slipper sole */
+        .slipper-sole {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(180deg, #4a3a30 0%, #3a2a20 100%);
+            border-radius: 12px 12px 8px 8px;
+        }
+
+        /* Slipper upper - fluffy part */
+        .slipper-upper {
+            position: absolute;
+            bottom: 4px;
+            left: 2px;
+            right: 2px;
+            height: 14px;
+            background: linear-gradient(180deg, #e8b8c8 0%, #d8a0b0 50%, #c890a0 100%);
+            border-radius: 50% 50% 40% 40%;
+            box-shadow:
+                inset 0 2px 6px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Fuzzy texture on slippers */
+        .slipper-upper::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            right: 4px;
+            height: 8px;
+            background: linear-gradient(180deg, rgba(255, 230, 240, 0.6) 0%, transparent 100%);
+            border-radius: 50%;
+        }
+
+        /* Inner slipper opening */
+        .slipper-opening {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 8px;
+            background: linear-gradient(180deg, #2a1a15 0%, #3a2520 100%);
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Plant - potted plant on right side */
         .plant {
             bottom: 20%;
-            right: 15%;
-            width: 50px;
-            height: 70px;
+            right: 14%;
+            width: 60px;
+            height: 80px;
             z-index: 3;
         }
 
@@ -1101,30 +1237,394 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 35px;
-            height: 30px;
-            background: linear-gradient(180deg, #cc9a6a 0%, #aa7a4a 100%);
-            border-radius: 3px 3px 8px 8px;
+            width: 38px;
+            height: 32px;
+            background: linear-gradient(180deg, #d4a574 0%, #b8855c 50%, #9c6b44 100%);
+            border-radius: 4px 4px 10px 10px;
+            box-shadow:
+                inset -4px 0 8px rgba(0, 0, 0, 0.15),
+                2px 3px 8px rgba(0, 0, 0, 0.3);
         }
 
+        /* Pot rim */
+        .plant-pot::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -2px;
+            right: -2px;
+            height: 8px;
+            background: linear-gradient(180deg, #d8b088 0%, #c49868 100%);
+            border-radius: 4px 4px 2px 2px;
+        }
+
+        /* Soil/dirt visible */
+        .plant-pot::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            height: 6px;
+            background: linear-gradient(180deg, #4a3a2a 0%, #3a2a1a 100%);
+            border-radius: 50%;
+        }
+
+        /* Plant stem and leaves container */
         .plant-leaves {
             position: absolute;
-            bottom: 25px;
+            bottom: 28px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 35px;
+            width: 50px;
+            height: 50px;
         }
 
-        /* Clothes pile - moved to right side */
-        .clothes-pile {
-            bottom: 18%;
-            right: 25%;
-            width: 60px;
-            height: 40px;
-            background: linear-gradient(180deg, #6a6acc 0%, #8a7acc 50%, #5a5aaa 100%);
-            border-radius: 20px 25px 15px 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        /* Center stem */
+        .plant-stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(180deg, #5a8a50 0%, #4a7a40 100%);
+            border-radius: 2px;
+        }
+
+        /* Leaves */
+        .plant-leaf {
+            position: absolute;
+            width: 18px;
+            height: 26px;
+            background: linear-gradient(135deg, #6aa860 0%, #5a9850 50%, #4a8840 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .plant-leaf::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1px;
+            height: 60%;
+            background: rgba(80, 120, 60, 0.6);
+            transform: translate(-50%, -30%);
+        }
+
+        .plant-leaf:nth-child(1) {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-5deg);
+        }
+
+        .plant-leaf:nth-child(2) {
+            bottom: 15px;
+            left: 8px;
+            transform: rotate(-30deg);
+        }
+
+        .plant-leaf:nth-child(3) {
+            bottom: 15px;
+            right: 8px;
+            transform: rotate(25deg);
+        }
+
+        .plant-leaf:nth-child(4) {
+            bottom: 5px;
+            left: 2px;
+            transform: rotate(-45deg);
+            width: 15px;
+            height: 22px;
+        }
+
+        .plant-leaf:nth-child(5) {
+            bottom: 5px;
+            right: 2px;
+            transform: rotate(40deg);
+            width: 15px;
+            height: 22px;
+        }
+
+        /* Bedroom rug - cozy area rug */
+        .bedroom-rug {
+            position: absolute;
+            bottom: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            height: 60px;
+            background: linear-gradient(90deg,
+                #3a3050 0%,
+                #4a4060 15%,
+                #3a3050 30%,
+                #4a4060 45%,
+                #3a3050 60%,
+                #4a4060 75%,
+                #3a3050 100%);
+            border-radius: 5px;
+            z-index: 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Rug border/fringe */
+        .bedroom-rug::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            border: 2px solid rgba(100, 80, 120, 0.4);
+            border-radius: 3px;
+        }
+
+        /* Rug fringe on ends */
+        .bedroom-rug::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 10px;
+            right: 10px;
+            height: 4px;
+            background: repeating-linear-gradient(90deg,
+                #4a4060 0px,
+                #4a4060 3px,
+                transparent 3px,
+                transparent 6px);
+        }
+
+        /* Wall poster/art */
+        .wall-poster {
+            position: absolute;
+            top: 22%;
+            left: 15%;
+            width: 70px;
+            height: 90px;
+            background: linear-gradient(180deg, #2a2a40 0%, #3a3a50 100%);
+            border: 3px solid #4a4560;
+            border-radius: 2px;
+            box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.4);
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* Poster image - abstract night sky art */
+        .poster-art {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            background: linear-gradient(180deg,
+                #1a1a35 0%,
+                #2a2a50 40%,
+                #3a3560 70%,
+                #4a4070 100%);
+            border-radius: 1px;
+        }
+
+        /* Poster mountain silhouette */
+        .poster-art::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(135deg,
+                #1a1a25 0%,
+                #1a1a25 40%,
+                transparent 40%),
+                linear-gradient(225deg,
+                #1a1a25 0%,
+                #1a1a25 35%,
+                transparent 35%);
+        }
+
+        /* Poster stars */
+        .poster-art::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            width: 4px;
+            height: 4px;
+            background: #fff8e0;
+            border-radius: 50%;
+            box-shadow:
+                15px 8px 0 1px #fff8e0,
+                -8px 15px 0 0 #fffae0,
+                25px 20px 0 0 #fffce0,
+                5px 25px 0 1px #fff8e0;
+        }
+
+        /* Shelf under poster */
+        .wall-shelf {
+            position: absolute;
+            top: calc(22% + 100px);
+            left: 12%;
+            width: 80px;
+            height: 8px;
+            background: linear-gradient(180deg, #5a5065 0%, #4a4555 100%);
+            border-radius: 2px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        /* Small items on shelf */
+        .shelf-items {
+            position: absolute;
+            top: calc(22% + 92px);
+            left: 15%;
+            width: 70px;
+            height: 15px;
             z-index: 3;
+        }
+
+        .shelf-book {
+            position: absolute;
+            bottom: 0;
+            left: 5px;
+            width: 12px;
+            height: 18px;
+            background: linear-gradient(90deg, #7a6090 0%, #6a5080 100%);
+            border-radius: 1px 2px 2px 1px;
+        }
+
+        .shelf-book:nth-child(2) {
+            left: 18px;
+            width: 10px;
+            height: 16px;
+            background: linear-gradient(90deg, #90a080 0%, #7a9070 100%);
+        }
+
+        .shelf-frame {
+            position: absolute;
+            bottom: 0;
+            right: 8px;
+            width: 14px;
+            height: 16px;
+            background: linear-gradient(180deg, #5a5065 0%, #4a4555 100%);
+            border: 1px solid #6a6575;
+            border-radius: 1px;
+        }
+
+        .shelf-frame::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: linear-gradient(180deg, #c8a090 0%, #b89080 100%);
+        }
+
+        /* Clothes pile - realistic layered clothes on floor */
+        .clothes-pile {
+            bottom: 16%;
+            right: 26%;
+            width: 70px;
+            height: 45px;
+            z-index: 3;
+        }
+
+        /* Bottom layer - jeans/pants */
+        .clothes-jeans {
+            position: absolute;
+            bottom: 0;
+            left: 5px;
+            width: 55px;
+            height: 18px;
+            background: linear-gradient(180deg, #4a5a7a 0%, #3a4a6a 100%);
+            border-radius: 8px 12px 6px 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Jeans pocket detail */
+        .clothes-jeans::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            width: 12px;
+            height: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 2px 2px 4px 4px;
+        }
+
+        /* Middle layer - hoodie/sweater */
+        .clothes-hoodie {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            width: 50px;
+            height: 22px;
+            background: linear-gradient(135deg, #8070a0 0%, #6a5a90 50%, #5a4a80 100%);
+            border-radius: 15px 20px 10px 12px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Hoodie fold detail */
+        .clothes-hoodie::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            width: 20px;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 2px;
+        }
+
+        /* Hoodie string */
+        .clothes-hoodie::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 18px;
+            width: 8px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 1px;
+        }
+
+        /* Top layer - t-shirt */
+        .clothes-shirt {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            width: 40px;
+            height: 16px;
+            background: linear-gradient(180deg, #c89080 0%, #b07060 100%);
+            border-radius: 10px 15px 8px 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transform: rotate(-8deg);
+        }
+
+        /* Shirt collar hint */
+        .clothes-shirt::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 12px;
+            width: 10px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+        }
+
+        /* Sock peeking out */
+        .clothes-sock {
+            position: absolute;
+            bottom: 5px;
+            right: 0;
+            width: 18px;
+            height: 10px;
+            background: linear-gradient(90deg, #e8e8e8 0%, #d0d0d0 100%);
+            border-radius: 6px 10px 4px 4px;
+            transform: rotate(15deg);
         }
 
         /* Charger (peeking out from under nightstand on left) */
@@ -1964,14 +2464,36 @@
             <!-- Moonlight glow -->
             <div class="moonlight"></div>
 
-            <!-- Window with stars -->
+            <!-- Wall poster/art -->
+            <div class="wall-poster">
+                <div class="poster-art"></div>
+            </div>
+
+            <!-- Wall shelf with items -->
+            <div class="wall-shelf"></div>
+            <div class="shelf-items">
+                <div class="shelf-book"></div>
+                <div class="shelf-book"></div>
+                <div class="shelf-frame"></div>
+            </div>
+
+            <!-- Bedroom rug -->
+            <div class="bedroom-rug"></div>
+
+            <!-- Window with stars, moon, and curtains -->
             <div class="bedroom-window">
+                <div class="window-curtain left"></div>
+                <div class="window-curtain right"></div>
+                <div class="window-divider"></div>
+                <div class="window-moon"></div>
                 <div class="window-stars">
-                    <div class="window-star" style="top: 20%; left: 30%;"></div>
-                    <div class="window-star" style="top: 40%; left: 60%;"></div>
-                    <div class="window-star" style="top: 15%; left: 80%;"></div>
-                    <div class="window-star" style="top: 60%; left: 20%;"></div>
-                    <div class="window-star" style="top: 70%; left: 70%;"></div>
+                    <div class="window-star" style="top: 25%; left: 20%;"></div>
+                    <div class="window-star bright" style="top: 35%; left: 50%;"></div>
+                    <div class="window-star" style="top: 10%; left: 70%;"></div>
+                    <div class="window-star" style="top: 55%; left: 15%;"></div>
+                    <div class="window-star" style="top: 65%; left: 60%;"></div>
+                    <div class="window-star bright" style="top: 75%; left: 35%;"></div>
+                    <div class="window-star" style="top: 45%; left: 80%;"></div>
                 </div>
             </div>
 
@@ -2025,18 +2547,37 @@
             </div>
 
             <div class="searchable slippers" data-item="slippers" id="search-slippers">
-                <div class="slipper"></div>
-                <div class="slipper"></div>
+                <div class="slipper">
+                    <div class="slipper-sole"></div>
+                    <div class="slipper-upper"></div>
+                    <div class="slipper-opening"></div>
+                </div>
+                <div class="slipper">
+                    <div class="slipper-sole"></div>
+                    <div class="slipper-upper"></div>
+                    <div class="slipper-opening"></div>
+                </div>
                 <div class="search-glow"></div>
             </div>
 
             <div class="searchable plant" data-item="plant" id="search-plant">
-                <div class="plant-leaves">🌱</div>
+                <div class="plant-leaves">
+                    <div class="plant-stem"></div>
+                    <div class="plant-leaf"></div>
+                    <div class="plant-leaf"></div>
+                    <div class="plant-leaf"></div>
+                    <div class="plant-leaf"></div>
+                    <div class="plant-leaf"></div>
+                </div>
                 <div class="plant-pot"></div>
                 <div class="search-glow"></div>
             </div>
 
             <div class="searchable clothes-pile" data-item="clothes" id="search-clothes">
+                <div class="clothes-jeans"></div>
+                <div class="clothes-hoodie"></div>
+                <div class="clothes-shirt"></div>
+                <div class="clothes-sock"></div>
                 <div class="search-glow"></div>
             </div>
 
