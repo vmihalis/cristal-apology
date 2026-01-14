@@ -1,0 +1,254 @@
+/* ============ STAGE 1: SHEEP COUNTING GAME ============ */
+
+/* Game Screen */
+#game-screen {
+    justify-content: flex-end;
+    padding-bottom: 0;
+}
+
+.progress-counter {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    color: #e9d5ff;
+    background: rgba(30, 30, 50, 0.8);
+    padding: 10px 25px;
+    border-radius: 30px;
+    border: 2px solid rgba(192, 132, 252, 0.3);
+}
+
+/* Fence and Ground */
+.ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    background: linear-gradient(180deg, #1e3a1e 0%, #0f2010 100%);
+    border-top: 3px solid #2d5a2d;
+}
+
+.fence {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+    z-index: 5;
+}
+
+.fence-post {
+    width: 15px;
+    height: 100px;
+    background: linear-gradient(90deg, #8b5a2b 0%, #a0522d 50%, #8b5a2b 100%);
+    border-radius: 3px;
+    position: relative;
+}
+
+.fence-post::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 15px;
+    background: linear-gradient(180deg, #a0522d 0%, #8b5a2b 100%);
+    border-radius: 5px 5px 0 0;
+}
+
+.fence-rail {
+    position: absolute;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: 12px;
+    background: linear-gradient(180deg, #a0522d 0%, #8b5a2b 100%);
+    border-radius: 3px;
+}
+
+.fence-rail.top { top: 15px; }
+.fence-rail.bottom { top: 55px; }
+
+/* ============ SHEEP ============ */
+.sheep-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.sheep-container {
+    position: absolute;
+    z-index: 10;
+    cursor: pointer;
+    pointer-events: auto;
+    animation: var(--animation-name, sheepJumpLeft) var(--duration, 2.5s) var(--easing, ease-in-out) forwards;
+}
+
+.sheep-container:hover {
+    filter: brightness(1.1);
+}
+
+/* Pattern 1: Classic left to right arc */
+@keyframes sheepJumpLeft {
+    0% { left: -150px; bottom: var(--start-y, 25%); }
+    50% { left: 50%; bottom: var(--peak-y, 65%); }
+    100% { left: calc(100% + 150px); bottom: var(--end-y, 25%); }
+}
+
+/* Pattern 2: Right to left */
+@keyframes sheepJumpRight {
+    0% { right: -150px; left: auto; bottom: var(--start-y, 25%); }
+    50% { right: 50%; left: auto; bottom: var(--peak-y, 65%); }
+    100% { right: calc(100% + 150px); left: auto; bottom: var(--end-y, 25%); }
+}
+
+/* Pattern 3: High bouncy arc */
+@keyframes sheepBounce {
+    0% { left: -150px; bottom: var(--start-y, 25%); }
+    25% { left: 25%; bottom: var(--peak-y, 75%); }
+    40% { left: 40%; bottom: calc(var(--peak-y, 75%) - 20%); }
+    60% { left: 60%; bottom: var(--peak-y, 75%); }
+    75% { left: 75%; bottom: calc(var(--peak-y, 75%) - 15%); }
+    100% { left: calc(100% + 150px); bottom: var(--end-y, 25%); }
+}
+
+/* Pattern 4: Low fast dash */
+@keyframes sheepDash {
+    0% { left: -150px; bottom: var(--start-y, 30%); }
+    20% { left: 15%; bottom: calc(var(--start-y, 30%) + 15%); }
+    80% { left: 85%; bottom: calc(var(--end-y, 30%) + 15%); }
+    100% { left: calc(100% + 150px); bottom: var(--end-y, 30%); }
+}
+
+/* Pattern 5: Zigzag */
+@keyframes sheepZigzag {
+    0% { left: -150px; bottom: var(--start-y, 25%); }
+    25% { left: 20%; bottom: var(--peak-y, 70%); }
+    50% { left: 50%; bottom: var(--start-y, 30%); }
+    75% { left: 80%; bottom: var(--peak-y, 70%); }
+    100% { left: calc(100% + 150px); bottom: var(--end-y, 25%); }
+}
+
+/* Pattern 6: Slow floaty */
+@keyframes sheepFloat {
+    0% { left: -150px; bottom: var(--start-y, 40%); }
+    30% { left: 25%; bottom: calc(var(--peak-y, 60%) + 5%); }
+    50% { left: 50%; bottom: var(--peak-y, 60%); }
+    70% { left: 75%; bottom: calc(var(--peak-y, 60%) - 5%); }
+    100% { left: calc(100% + 150px); bottom: var(--end-y, 40%); }
+}
+
+.sheep {
+    position: relative;
+    width: 120px;
+    height: 90px;
+    transform: scale(var(--size, 1)) scaleX(var(--flip, 1));
+}
+
+.sheep svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+/* Gentle bobbing animation for the sheep */
+.sheep-container:not(.caught) .sheep {
+    animation: sheepBob 0.5s ease-in-out infinite;
+}
+
+@keyframes sheepBob {
+    0%, 100% { transform: scale(var(--size, 1)) scaleX(var(--flip, 1)) translateY(0) rotate(-3deg); }
+    50% { transform: scale(var(--size, 1)) scaleX(var(--flip, 1)) translateY(-8px) rotate(3deg); }
+}
+
+/* Sheep Click Effect */
+.sheep-container.caught {
+    animation: sheepPoof 0.4s ease forwards !important;
+}
+
+@keyframes sheepPoof {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+/* Escaped sheep - fades as it leaves */
+.sheep-container.escaped {
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+
+/* Hearts burst effect */
+.hearts-burst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+}
+
+.burst-heart {
+    position: absolute;
+    font-size: 24px;
+    animation: burstOut 1s ease-out forwards;
+}
+
+@keyframes burstOut {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
+}
+
+/* ============ MESSAGE CARD ============ */
+.message-card {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%) translateY(50px);
+    background: rgba(30, 30, 50, 0.95);
+    border: 2px solid rgba(244, 114, 182, 0.4);
+    border-radius: 20px;
+    padding: 30px 40px;
+    max-width: 90%;
+    width: 400px;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: 20;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.message-card.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.message-text {
+    font-size: 1.3rem;
+    color: #fce7f3;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.next-btn {
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.next-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+}

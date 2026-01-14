@@ -1,0 +1,2014 @@
+/* ============ STAGE 2: PHONE CHARGING GAME ============ */
+
+#phone-stage {
+    background: linear-gradient(180deg, #0a0a12 0%, #12121f 50%, #0a0a12 100%);
+}
+
+.bedroom {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Room structure - walls and floor */
+.room-wall {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 25%;
+    background: linear-gradient(180deg, #1a1a28 0%, #1f1f30 100%);
+}
+
+.room-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 25%;
+    background: linear-gradient(180deg, #2a2535 0%, #1e1a25 100%);
+}
+
+/* Baseboard trim between wall and floor */
+.room-baseboard {
+    position: absolute;
+    bottom: 25%;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: #35303d;
+}
+
+/* Moonlight effect */
+.moonlight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 70%;
+    background: radial-gradient(ellipse at top right, rgba(200, 210, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Window - positioned realistically on wall */
+.bedroom-window {
+    position: absolute;
+    top: 20%;
+    right: 12%;
+    width: 140px;
+    height: 180px;
+    background: linear-gradient(180deg, #0d0d25 0%, #1a1a40 30%, #252560 100%);
+    border: 6px solid #4a4555;
+    border-radius: 4px;
+    box-shadow:
+        inset 0 0 40px rgba(100, 130, 200, 0.15),
+        0 0 20px rgba(100, 130, 200, 0.1);
+    z-index: 2;
+    overflow: hidden;
+}
+
+/* Window sill */
+.bedroom-window::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: -10px;
+    right: -10px;
+    height: 12px;
+    background: linear-gradient(180deg, #5a5065 0%, #4a4555 100%);
+    border-radius: 2px;
+    z-index: 3;
+}
+
+/* Window frame cross */
+.bedroom-window::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: #3a3a4a;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 100px transparent, inset 0 0 0 0 transparent;
+}
+
+/* Horizontal window divider */
+.window-divider {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: #3a3a4a;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+/* Curtains */
+.window-curtain {
+    position: absolute;
+    top: 0;
+    width: 25px;
+    height: 100%;
+    z-index: 1;
+}
+
+.window-curtain.left {
+    left: 0;
+    background: linear-gradient(90deg, rgba(90, 70, 100, 0.8) 0%, rgba(90, 70, 100, 0.3) 100%);
+    border-radius: 0 10px 5px 0;
+}
+
+.window-curtain.right {
+    right: 0;
+    background: linear-gradient(270deg, rgba(90, 70, 100, 0.8) 0%, rgba(90, 70, 100, 0.3) 100%);
+    border-radius: 10px 0 0 5px;
+}
+
+.window-stars {
+    position: absolute;
+    top: 8px;
+    left: 30px;
+    right: 30px;
+    bottom: 8px;
+}
+
+.window-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+.window-star.bright {
+    width: 3px;
+    height: 3px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+/* Moon visible through window */
+.window-moon {
+    position: absolute;
+    top: 15%;
+    right: 20%;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle at 30% 30%, #fffef0 0%, #e8e4c8 50%, #d0cca0 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 200, 0.4), 0 0 30px rgba(255, 255, 200, 0.2);
+}
+
+/* Bed */
+.bed {
+    position: absolute;
+    bottom: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 140px;
+    z-index: 5;
+}
+
+/* Bed frame - visible side */
+.bed-frame {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(180deg, #4a3a2a 0%, #3a2a1a 100%);
+    border-radius: 5px;
+}
+
+/* Bed legs */
+.bed-leg {
+    position: absolute;
+    bottom: -15px;
+    width: 15px;
+    height: 15px;
+    background: #3a2a1a;
+    border-radius: 3px;
+}
+
+.bed-leg:first-child { left: 20px; }
+.bed-leg:last-child { right: 20px; }
+
+.mattress {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    height: 45px;
+    background: linear-gradient(180deg, #4a4a6a 0%, #3a3a5a 100%);
+    border-radius: 8px;
+}
+
+/* Body bump visible on top of blanket - torso area */
+.body-bump-torso {
+    position: absolute;
+    bottom: 55px;
+    left: 70px;
+    width: 120px;
+    height: 35px;
+    background: linear-gradient(180deg, #8070dd 0%, #7060cd 100%);
+    border-radius: 50% 50% 40% 40%;
+    z-index: 4;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Body bump - hip/legs area */
+.body-bump-legs {
+    position: absolute;
+    bottom: 50px;
+    left: 160px;
+    width: 90px;
+    height: 25px;
+    background: linear-gradient(180deg, #7a6add 0%, #6a5acd 100%);
+    border-radius: 40% 50% 40% 40%;
+    z-index: 4;
+}
+
+/* Feet bump at end of blanket */
+.feet-bump {
+    position: absolute;
+    bottom: 55px;
+    right: 35px;
+    width: 40px;
+    height: 30px;
+    background: linear-gradient(180deg, #7a6add 0%, #6a5acd 100%);
+    border-radius: 50% 50% 30% 30%;
+    z-index: 4;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.blanket {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(180deg, #7060cd 0%, #6a5acd 50%, #5a4abd 100%);
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+}
+
+/* Blanket edge draping down */
+.blanket::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 10px;
+    right: 10px;
+    height: 12px;
+    background: linear-gradient(180deg, #5a4abd 0%, #4a3aad 100%);
+    border-radius: 0 0 8px 8px;
+}
+
+.pillow {
+    position: absolute;
+    bottom: 70px;
+    left: 20px;
+    width: 85px;
+    height: 45px;
+    background: linear-gradient(180deg, #f0f0f8 0%, #e0e0e8 100%);
+    border-radius: 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Pillow indent where head is */
+.pillow::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 15px;
+    width: 50px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+}
+
+/* Sleeping character (you) */
+.sleeper {
+    position: absolute;
+    bottom: 75px;
+    left: 45px;
+    z-index: 4;
+}
+
+.sleeper-head {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(180deg, #f5d0c5 0%, #e8c0b5 100%);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sleeper-hair {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    height: 32px;
+    background: linear-gradient(180deg, #4a4a5a 0%, #3a3a4a 100%);
+    border-radius: 28px 28px 0 0;
+}
+
+.sleeper-eyes {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+}
+
+.sleeper-eye {
+    width: 10px;
+    height: 2px;
+    background: #3a3a4a;
+    border-radius: 2px;
+}
+
+/* Visible shoulder/arm peeking out */
+.sleeper-shoulder {
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    width: 30px;
+    height: 20px;
+    background: linear-gradient(180deg, #f5d0c5 0%, #e8c0b5 100%);
+    border-radius: 15px 5px 15px 15px;
+}
+
+.sleeper-zzz {
+    position: absolute;
+    top: -20px;
+    right: -30px;
+    font-size: 16px;
+    color: #c4b5fd;
+    opacity: 0;
+    animation: floatZ 2s ease-in-out infinite;
+}
+
+.sleeper-zzz:nth-child(2) { animation-delay: 0.5s; right: -45px; top: -35px; font-size: 14px; }
+.sleeper-zzz:nth-child(3) { animation-delay: 1s; right: -55px; top: -50px; font-size: 12px; }
+
+/* Nightstand - now on the LEFT side of bed */
+.nightstand {
+    position: absolute;
+    bottom: 18%;
+    left: 18%;
+    width: 80px;
+    height: 70px;
+    background: linear-gradient(180deg, #5a4a5a 0%, #4a3a4a 100%);
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 6;
+}
+
+.nightstand-drawer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 20px;
+    background: #3a3a4a;
+    border-radius: 3px;
+    border: 1px solid #2a2a3a;
+}
+
+.nightstand-drawer::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 4px;
+    background: #5a5a6a;
+    border-radius: 2px;
+}
+
+/* Phone on nightstand */
+.phone-on-stand {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 55px;
+    background: linear-gradient(180deg, #1a1a2a 0%, #0a0a1a 100%);
+    border-radius: 8px;
+    border: 2px solid #2a2a3a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.phone-screen-glow {
+    width: 28px;
+    height: 45px;
+    background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+}
+
+/* Phone showing active call - green glow */
+.phone-screen-glow.on-call {
+    background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+    box-shadow: 0 0 25px rgba(74, 222, 128, 0.5);
+    animation: callPulse 2s ease-in-out infinite;
+}
+
+@keyframes callPulse {
+    0%, 100% { box-shadow: 0 0 25px rgba(74, 222, 128, 0.5); }
+    50% { box-shadow: 0 0 35px rgba(74, 222, 128, 0.7); }
+}
+
+.phone-screen-glow.dying {
+    animation: phoneDying 2s ease-out forwards;
+}
+
+.phone-screen-glow.dead {
+    background: #1a1a2a;
+    box-shadow: none;
+}
+
+@keyframes phoneDying {
+    0% { background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%); box-shadow: 0 0 20px rgba(74, 144, 226, 0.4); }
+    30% { background: linear-gradient(180deg, #e24a4a 0%, #bd3535 100%); box-shadow: 0 0 20px rgba(226, 74, 74, 0.4); }
+    60% { background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%); box-shadow: 0 0 5px rgba(100, 100, 100, 0.2); }
+    100% { background: #1a1a2a; box-shadow: none; }
+}
+
+.phone-battery-icon {
+    font-size: 14px;
+}
+
+/* Wake up exclamation */
+.wake-up-alert {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    color: #ff6b6b;
+    opacity: 0;
+    text-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
+    z-index: 20;
+}
+
+.wake-up-alert.show {
+    animation: alertPop 0.5s ease-out forwards;
+}
+
+@keyframes alertPop {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+/* Search phase */
+.search-prompt {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.3rem;
+    color: #e9d5ff;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    z-index: 20;
+}
+
+.search-prompt.show {
+    opacity: 1;
+}
+
+.search-feedback {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.1rem;
+    color: #f9a8d4;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 20;
+}
+
+.search-feedback.show {
+    opacity: 1;
+}
+
+/* Searchable objects */
+.searchable {
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.searchable:hover {
+    filter: brightness(1.3);
+}
+
+.searchable.searched {
+    pointer-events: none;
+}
+
+.searchable.searched::after {
+    content: '✗';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: rgba(255, 100, 100, 0.8);
+}
+
+.searchable.found::after {
+    content: '✓';
+    color: rgba(100, 255, 150, 0.9);
+}
+
+.search-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255, 255, 200, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.searchable:hover .search-glow {
+    opacity: 1;
+}
+
+/* Desk lamp - on top of nightstand (left side) */
+.desk-lamp {
+    bottom: calc(18% + 70px);
+    left: calc(18% + 50px);
+    width: 40px;
+    height: 60px;
+    z-index: 7;
+}
+
+.lamp-base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 8px;
+    background: #5a5a6a;
+    border-radius: 3px;
+}
+
+.lamp-stem {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 30px;
+    background: #4a4a5a;
+}
+
+.lamp-shade {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 25px;
+    background: linear-gradient(180deg, #8a7acc 0%, #6a5aaa 100%);
+    border-radius: 5px 5px 15px 15px;
+}
+
+/* Book on floor - in front of bed */
+.floor-book {
+    bottom: 13%;
+    left: 46%;
+    width: 45px;
+    height: 32px;
+    background: linear-gradient(90deg, #8a5050 0%, #a06060 20%, #b07070 50%, #a06060 80%, #8a5050 100%);
+    border-radius: 2px 3px 3px 2px;
+    transform: rotate(-12deg);
+    box-shadow:
+        2px 2px 8px rgba(0, 0, 0, 0.4),
+        inset -2px 0 4px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+
+/* Book spine */
+.floor-book::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: linear-gradient(90deg, #6a3535 0%, #8a5050 100%);
+    border-radius: 2px 0 0 2px;
+}
+
+/* Book pages edge */
+.floor-book::after {
+    content: '';
+    position: absolute;
+    right: 2px;
+    top: 3px;
+    bottom: 3px;
+    width: 2px;
+    background: repeating-linear-gradient(180deg,
+        #f5f0e5 0px,
+        #f5f0e5 1px,
+        #e8e3d8 1px,
+        #e8e3d8 2px);
+    border-radius: 0 1px 1px 0;
+}
+
+/* Slippers - cozy bedroom slippers at foot of bed */
+.slippers {
+    bottom: 11%;
+    left: 54%;
+    width: 80px;
+    height: 35px;
+    z-index: 3;
+}
+
+.slipper {
+    position: absolute;
+    width: 35px;
+    height: 18px;
+    bottom: 0;
+}
+
+.slipper:first-child {
+    left: 0;
+    transform: rotate(-15deg);
+}
+
+.slipper:last-child {
+    right: 0;
+    transform: rotate(8deg);
+}
+
+/* Slipper sole */
+.slipper-sole {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(180deg, #4a3a30 0%, #3a2a20 100%);
+    border-radius: 12px 12px 8px 8px;
+}
+
+/* Slipper upper - fluffy part */
+.slipper-upper {
+    position: absolute;
+    bottom: 4px;
+    left: 2px;
+    right: 2px;
+    height: 14px;
+    background: linear-gradient(180deg, #e8b8c8 0%, #d8a0b0 50%, #c890a0 100%);
+    border-radius: 50% 50% 40% 40%;
+    box-shadow:
+        inset 0 2px 6px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Fuzzy texture on slippers */
+.slipper-upper::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    right: 4px;
+    height: 8px;
+    background: linear-gradient(180deg, rgba(255, 230, 240, 0.6) 0%, transparent 100%);
+    border-radius: 50%;
+}
+
+/* Inner slipper opening */
+.slipper-opening {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 8px;
+    background: linear-gradient(180deg, #2a1a15 0%, #3a2520 100%);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Plant - potted plant on right side */
+.plant {
+    bottom: 20%;
+    right: 14%;
+    width: 60px;
+    height: 80px;
+    z-index: 3;
+}
+
+.plant-pot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 32px;
+    background: linear-gradient(180deg, #d4a574 0%, #b8855c 50%, #9c6b44 100%);
+    border-radius: 4px 4px 10px 10px;
+    box-shadow:
+        inset -4px 0 8px rgba(0, 0, 0, 0.15),
+        2px 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Pot rim */
+.plant-pot::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -2px;
+    right: -2px;
+    height: 8px;
+    background: linear-gradient(180deg, #d8b088 0%, #c49868 100%);
+    border-radius: 4px 4px 2px 2px;
+}
+
+/* Soil/dirt visible */
+.plant-pot::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    height: 6px;
+    background: linear-gradient(180deg, #4a3a2a 0%, #3a2a1a 100%);
+    border-radius: 50%;
+}
+
+/* Plant stem and leaves container */
+.plant-leaves {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+}
+
+/* Center stem */
+.plant-stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 30px;
+    background: linear-gradient(180deg, #5a8a50 0%, #4a7a40 100%);
+    border-radius: 2px;
+}
+
+/* Leaves */
+.plant-leaf {
+    position: absolute;
+    width: 18px;
+    height: 26px;
+    background: linear-gradient(135deg, #6aa860 0%, #5a9850 50%, #4a8840 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.plant-leaf::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 60%;
+    background: rgba(80, 120, 60, 0.6);
+    transform: translate(-50%, -30%);
+}
+
+.plant-leaf:nth-child(1) {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-5deg);
+}
+
+.plant-leaf:nth-child(2) {
+    bottom: 15px;
+    left: 8px;
+    transform: rotate(-30deg);
+}
+
+.plant-leaf:nth-child(3) {
+    bottom: 15px;
+    right: 8px;
+    transform: rotate(25deg);
+}
+
+.plant-leaf:nth-child(4) {
+    bottom: 5px;
+    left: 2px;
+    transform: rotate(-45deg);
+    width: 15px;
+    height: 22px;
+}
+
+.plant-leaf:nth-child(5) {
+    bottom: 5px;
+    right: 2px;
+    transform: rotate(40deg);
+    width: 15px;
+    height: 22px;
+}
+
+/* Bedroom rug - cozy area rug */
+.bedroom-rug {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 350px;
+    height: 60px;
+    background: linear-gradient(90deg,
+        #3a3050 0%,
+        #4a4060 15%,
+        #3a3050 30%,
+        #4a4060 45%,
+        #3a3050 60%,
+        #4a4060 75%,
+        #3a3050 100%);
+    border-radius: 5px;
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Rug border/fringe */
+.bedroom-rug::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    border: 2px solid rgba(100, 80, 120, 0.4);
+    border-radius: 3px;
+}
+
+/* Rug fringe on ends */
+.bedroom-rug::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 10px;
+    right: 10px;
+    height: 4px;
+    background: repeating-linear-gradient(90deg,
+        #4a4060 0px,
+        #4a4060 3px,
+        transparent 3px,
+        transparent 6px);
+}
+
+/* Wall poster/art */
+.wall-poster {
+    position: absolute;
+    top: 22%;
+    left: 15%;
+    width: 70px;
+    height: 90px;
+    background: linear-gradient(180deg, #2a2a40 0%, #3a3a50 100%);
+    border: 3px solid #4a4560;
+    border-radius: 2px;
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.4);
+    z-index: 2;
+    overflow: hidden;
+}
+
+/* Poster image - abstract night sky art */
+.poster-art {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    background: linear-gradient(180deg,
+        #1a1a35 0%,
+        #2a2a50 40%,
+        #3a3560 70%,
+        #4a4070 100%);
+    border-radius: 1px;
+}
+
+/* Poster mountain silhouette */
+.poster-art::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(135deg,
+        #1a1a25 0%,
+        #1a1a25 40%,
+        transparent 40%),
+        linear-gradient(225deg,
+        #1a1a25 0%,
+        #1a1a25 35%,
+        transparent 35%);
+}
+
+/* Poster stars */
+.poster-art::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: 4px;
+    height: 4px;
+    background: #fff8e0;
+    border-radius: 50%;
+    box-shadow:
+        15px 8px 0 1px #fff8e0,
+        -8px 15px 0 0 #fffae0,
+        25px 20px 0 0 #fffce0,
+        5px 25px 0 1px #fff8e0;
+}
+
+/* Shelf under poster */
+.wall-shelf {
+    position: absolute;
+    top: calc(22% + 100px);
+    left: 12%;
+    width: 80px;
+    height: 8px;
+    background: linear-gradient(180deg, #5a5065 0%, #4a4555 100%);
+    border-radius: 2px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+/* Small items on shelf */
+.shelf-items {
+    position: absolute;
+    top: calc(22% + 92px);
+    left: 15%;
+    width: 70px;
+    height: 15px;
+    z-index: 3;
+}
+
+.shelf-book {
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+    width: 12px;
+    height: 18px;
+    background: linear-gradient(90deg, #7a6090 0%, #6a5080 100%);
+    border-radius: 1px 2px 2px 1px;
+}
+
+.shelf-book:nth-child(2) {
+    left: 18px;
+    width: 10px;
+    height: 16px;
+    background: linear-gradient(90deg, #90a080 0%, #7a9070 100%);
+}
+
+.shelf-frame {
+    position: absolute;
+    bottom: 0;
+    right: 8px;
+    width: 14px;
+    height: 16px;
+    background: linear-gradient(180deg, #5a5065 0%, #4a4555 100%);
+    border: 1px solid #6a6575;
+    border-radius: 1px;
+}
+
+.shelf-frame::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: linear-gradient(180deg, #c8a090 0%, #b89080 100%);
+}
+
+/* Clothes pile - realistic layered clothes on floor */
+.clothes-pile {
+    bottom: 16%;
+    right: 26%;
+    width: 70px;
+    height: 45px;
+    z-index: 3;
+}
+
+/* Bottom layer - jeans/pants */
+.clothes-jeans {
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+    width: 55px;
+    height: 18px;
+    background: linear-gradient(180deg, #4a5a7a 0%, #3a4a6a 100%);
+    border-radius: 8px 12px 6px 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Jeans pocket detail */
+.clothes-jeans::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    width: 12px;
+    height: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2px 2px 4px 4px;
+}
+
+/* Middle layer - hoodie/sweater */
+.clothes-hoodie {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 50px;
+    height: 22px;
+    background: linear-gradient(135deg, #8070a0 0%, #6a5a90 50%, #5a4a80 100%);
+    border-radius: 15px 20px 10px 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Hoodie fold detail */
+.clothes-hoodie::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    width: 20px;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+}
+
+/* Hoodie string */
+.clothes-hoodie::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 18px;
+    width: 8px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 1px;
+}
+
+/* Top layer - t-shirt */
+.clothes-shirt {
+    position: absolute;
+    bottom: 25px;
+    left: 15px;
+    width: 40px;
+    height: 16px;
+    background: linear-gradient(180deg, #c89080 0%, #b07060 100%);
+    border-radius: 10px 15px 8px 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: rotate(-8deg);
+}
+
+/* Shirt collar hint */
+.clothes-shirt::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 12px;
+    width: 10px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+}
+
+/* Sock peeking out */
+.clothes-sock {
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    width: 18px;
+    height: 10px;
+    background: linear-gradient(90deg, #e8e8e8 0%, #d0d0d0 100%);
+    border-radius: 6px 10px 4px 4px;
+    transform: rotate(15deg);
+}
+
+/* Charger (peeking out from under nightstand on left) */
+.charger-spot {
+    bottom: calc(18% - 5px);
+    left: calc(18% + 20px);
+    width: 70px;
+    height: 35px;
+    z-index: 4;
+}
+
+/* The white USB cable wire */
+.charger-cable {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 45px;
+    height: 4px;
+    background: linear-gradient(90deg, #e8e8e8 0%, #d0d0d0 50%, #e8e8e8 100%);
+    border-radius: 2px;
+    transform: rotate(-5deg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Lightning/USB-C connector tip */
+.charger-plug {
+    position: absolute;
+    bottom: 8px;
+    left: 40px;
+    width: 22px;
+    height: 10px;
+    background: linear-gradient(90deg, #c0c0c0 0%, #e0e0e0 50%, #c0c0c0 100%);
+    border-radius: 2px 5px 5px 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.charger-plug::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 2px;
+    width: 6px;
+    height: 6px;
+    background: linear-gradient(90deg, #a0a0a0 0%, #c0c0c0 100%);
+    border-radius: 1px;
+}
+
+/* Metal contacts on the connector */
+.charger-plug::after {
+    content: '';
+    position: absolute;
+    right: 4px;
+    top: 3px;
+    width: 8px;
+    height: 4px;
+    background: linear-gradient(90deg, #808080 0%, #606060 100%);
+    border-radius: 1px;
+}
+
+/* ============ CALL DYING INTRO PHASE ============ */
+/* Floating phone above the bedroom - bedroom stays visible */
+.call-dying-screen {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+    z-index: 35;
+}
+
+.call-dying-screen.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.call-active-phone {
+    width: 200px;
+    height: 360px;
+    background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+    border-radius: 30px;
+    border: 4px solid #3a3a4a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.call-active-phone::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    width: 50px;
+    height: 5px;
+    background: #3a3a4a;
+    border-radius: 3px;
+}
+
+.call-screen-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.call-contact-photo-big {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #f472b6 0%, #c084fc 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 30px rgba(244, 114, 182, 0.4);
+    animation: callGlow 2s ease-in-out infinite;
+}
+
+@keyframes callGlow {
+    0%, 100% { box-shadow: 0 0 30px rgba(244, 114, 182, 0.4); }
+    50% { box-shadow: 0 0 50px rgba(244, 114, 182, 0.6); }
+}
+
+.call-contact-name-big {
+    font-size: 1.6rem;
+    color: white;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.call-timer {
+    font-size: 1.1rem;
+    color: #a0a0b0;
+    margin-bottom: 20px;
+    font-family: monospace;
+}
+
+.call-active-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4ade80;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.call-active-dot {
+    width: 10px;
+    height: 10px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulseDot 1s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.low-battery-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ef4444;
+    font-size: 0.85rem;
+    padding: 8px 15px;
+    background: rgba(239, 68, 68, 0.15);
+    border-radius: 20px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.low-battery-warning.show {
+    opacity: 1;
+    animation: warningPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% { background: rgba(239, 68, 68, 0.15); }
+    50% { background: rgba(239, 68, 68, 0.3); }
+}
+
+.phone-dying-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    border-radius: 26px;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.5s ease;
+}
+
+.phone-dying-overlay.show {
+    opacity: 1;
+}
+
+.phone-dying-overlay .dead-icon {
+    font-size: 60px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.5s ease;
+}
+
+.phone-dying-overlay.show .dead-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.call-disconnected-msg {
+    margin-top: 20px;
+    color: #ef4444;
+    font-size: 1.2rem;
+    opacity: 0;
+    text-align: center;
+    transition: opacity 0.5s ease;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.call-disconnected-msg.show {
+    opacity: 1;
+}
+
+/* ============ CHARGING MINI-GAME ============ */
+.charging-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #0a0a15 0%, #1a1a2a 50%, #0a0a15 100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+    z-index: 30;
+    overflow: hidden;
+}
+
+.charging-screen.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Game area container */
+.charging-game-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Game HUD at top */
+.charging-hud {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+}
+
+.charging-hud-battery {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 2px solid rgba(100, 100, 150, 0.3);
+}
+
+.hud-battery-icon {
+    width: 40px;
+    height: 22px;
+    background: #1a1a2a;
+    border: 2px solid #5a5a6a;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hud-battery-icon::before {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 10px;
+    background: #5a5a6a;
+    border-radius: 0 2px 2px 0;
+}
+
+.hud-battery-fill {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    bottom: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+    border-radius: 2px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.hud-battery-fill.medium {
+    background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.hud-battery-fill.good {
+    background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+}
+
+.hud-percent {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #e9d5ff;
+    min-width: 50px;
+}
+
+.charging-instruction {
+    font-size: 0.9rem;
+    color: rgba(200, 180, 255, 0.8);
+    text-align: center;
+}
+
+/* Draggable phone catcher */
+.catcher-phone {
+    position: absolute;
+    bottom: 22%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 120px;
+    background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+    border-radius: 12px;
+    border: 3px solid #4a4a5a;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(100, 100, 200, 0.2);
+    cursor: grab;
+    z-index: 5;
+    touch-action: none;
+    transition: box-shadow 0.2s ease;
+}
+
+.catcher-phone:active {
+    cursor: grabbing;
+}
+
+.catcher-phone.catching {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(100, 255, 150, 0.5);
+}
+
+.catcher-phone.hit-surge {
+    animation: hitShake 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 100, 100, 0.8);
+}
+
+@keyframes hitShake {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(-5deg); }
+    75% { transform: translateX(-50%) rotate(5deg); }
+}
+
+/* Phone screen glow */
+.catcher-phone::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    right: 8px;
+    bottom: 20px;
+    background: linear-gradient(180deg, #1a1a30 0%, #252540 100%);
+    border-radius: 6px;
+}
+
+/* Phone notch */
+.catcher-phone::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 4px;
+    background: #3a3a4a;
+    border-radius: 2px;
+}
+
+/* Phone battery indicator on catcher */
+.catcher-battery {
+    position: absolute;
+    top: 15px;
+    right: 12px;
+    font-size: 10px;
+    color: #4ade80;
+}
+
+/* Energy orbs container */
+.orbs-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Energy orb base styles */
+.energy-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatDown linear forwards;
+    top: 10%;
+}
+
+@keyframes floatDown {
+    0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 0;
+    }
+    8% {
+        transform: translateY(3vh) scale(1);
+        opacity: 1;
+    }
+    80% {
+        transform: translateY(55vh) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(68vh) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Green orb - standard energy +3% */
+.energy-orb.green {
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle at 30% 30%, #6ee7b7 0%, #22c55e 50%, #15803d 100%);
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.8), 0 0 30px rgba(34, 197, 94, 0.4);
+}
+
+.energy-orb.green::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+}
+
+/* Blue orb - bonus energy +5% */
+.energy-orb.blue {
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle at 30% 30%, #93c5fd 0%, #3b82f6 50%, #1d4ed8 100%);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.4);
+}
+
+.energy-orb.blue::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+}
+
+/* Gold orb - super bonus +8% */
+.energy-orb.gold {
+    width: 35px;
+    height: 35px;
+    background: radial-gradient(circle at 30% 30%, #fef08a 0%, #facc15 50%, #ca8a04 100%);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.9), 0 0 50px rgba(250, 204, 21, 0.5);
+}
+
+.energy-orb.gold::before {
+    content: '⚡';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+}
+
+/* Red surge orb - danger! -5% */
+.energy-orb.surge {
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle at 30% 30%, #fca5a5 0%, #ef4444 50%, #b91c1c 100%);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.9), 0 0 40px rgba(239, 68, 68, 0.5);
+}
+
+.energy-orb.surge::before {
+    content: '⚠';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+}
+
+/* Power source cloud at top */
+.power-source {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 50px;
+    background: radial-gradient(ellipse at center, rgba(100, 150, 255, 0.3) 0%, transparent 70%);
+    z-index: 2;
+}
+
+.power-source::before {
+    content: '⚡';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    animation: powerPulse 1s ease-in-out infinite;
+}
+
+@keyframes powerPulse {
+    0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* Power glow effect at top */
+.power-glow {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 80px;
+    background: radial-gradient(ellipse at center, rgba(100, 180, 255, 0.2) 0%, transparent 70%);
+    animation: glowPulse 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+
+/* Floor/ground area where phone sits */
+.game-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background: linear-gradient(180deg, transparent 0%, rgba(30, 25, 40, 0.8) 50%, rgba(20, 15, 30, 1) 100%);
+    z-index: 1;
+}
+
+/* Catch effect */
+.catch-effect {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: catchBurst 0.4s ease-out forwards;
+}
+
+@keyframes catchBurst {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+.catch-effect.green {
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.6) 0%, transparent 70%);
+}
+
+.catch-effect.blue {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, transparent 70%);
+}
+
+.catch-effect.gold {
+    background: radial-gradient(circle, rgba(250, 204, 21, 0.8) 0%, transparent 70%);
+}
+
+.catch-effect.surge {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.8) 0%, transparent 70%);
+}
+
+/* Score popup */
+.score-popup {
+    position: absolute;
+    font-weight: 700;
+    font-size: 1.2rem;
+    pointer-events: none;
+    animation: scoreFloat 0.8s ease-out forwards;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes scoreFloat {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-40px); opacity: 0; }
+}
+
+.score-popup.positive { color: #4ade80; }
+.score-popup.bonus { color: #60a5fa; }
+.score-popup.super { color: #fbbf24; }
+.score-popup.negative { color: #f87171; }
+
+/* Charging complete message */
+.charging-complete {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.charging-complete.show {
+    animation: completeReveal 1s ease-out forwards;
+}
+
+@keyframes completeReveal {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.charging-complete-text {
+    font-size: 1.8rem;
+    color: #4ade80;
+    text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+    margin-bottom: 10px;
+}
+
+.charging-complete-sub {
+    font-size: 1.1rem;
+    color: #c4b5fd;
+}
+
+/* Charging message overlay */
+.charging-message {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    color: #c4b5fd;
+    text-align: center;
+    max-width: 300px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.charging-message.show {
+    opacity: 1;
+}
+
+/* ============ CALLING PHASE ============ */
+.calling-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+    z-index: 30;
+}
+
+.calling-screen.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.call-phone {
+    width: 200px;
+    height: 360px;
+    background: linear-gradient(180deg, #1a1a2a 0%, #0f0f1a 100%);
+    border-radius: 30px;
+    border: 4px solid #3a3a4a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.call-phone::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    width: 60px;
+    height: 6px;
+    background: #3a3a4a;
+    border-radius: 3px;
+}
+
+.contact-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f472b6 0%, #c084fc 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(244, 114, 182, 0.4);
+}
+
+.contact-name {
+    font-size: 1.5rem;
+    color: #fce7f3;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.call-status {
+    font-size: 1rem;
+    color: #a78bfa;
+    margin-bottom: 30px;
+    min-height: 24px;
+}
+
+.call-status.ringing {
+    animation: ringPulse 1s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.call-actions {
+    display: flex;
+    gap: 40px;
+    margin-top: auto;
+}
+
+.call-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.call-btn.end-call {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.call-btn.retry-call {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+.call-btn:hover {
+    transform: scale(1.1);
+}
+
+.no-answer-msg {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    color: #f9a8d4;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.no-answer-msg.show {
+    opacity: 1;
+}
+
+/* Morning light transition */
+.morning-light {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255, 200, 150, 0) 0%, rgba(255, 200, 150, 0) 100%);
+    pointer-events: none;
+    transition: background 3s ease;
+    z-index: 5;
+}
+
+.morning-light.rising {
+    background: linear-gradient(180deg, rgba(255, 200, 150, 0.15) 0%, rgba(255, 180, 130, 0.1) 50%, rgba(255, 200, 150, 0) 100%);
+}
+
+/* Stage 2 transition message */
+.stage-transition {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.stage-transition.show {
+    animation: fadeInOut 4s ease forwards;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.stage-transition-text {
+    font-size: 1.5rem;
+    color: #fce7f3;
+    text-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    line-height: 1.8;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 600px) {
+    .bed {
+        width: 240px;
+    }
+
+    .nightstand {
+        width: 60px;
+        height: 55px;
+        left: 10%;
+    }
+
+    .bedroom-window {
+        width: 100px;
+        height: 130px;
+    }
+
+    .wall-poster {
+        width: 50px;
+        height: 65px;
+    }
+}
