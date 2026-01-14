@@ -282,35 +282,83 @@
         .fence-rail.bottom { top: 55px; }
 
         /* ============ SHEEP ============ */
+        .sheep-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
         .sheep-container {
             position: absolute;
-            bottom: 25%;
-            left: -150px;
             z-index: 10;
             cursor: pointer;
-            transition: transform 0.1s ease;
+            pointer-events: auto;
+            animation: var(--animation-name, sheepJumpLeft) var(--duration, 2.5s) var(--easing, ease-in-out) forwards;
         }
 
         .sheep-container:hover {
-            transform: scale(1.1);
+            filter: brightness(1.1);
         }
 
-        .sheep-container.jumping {
-            animation: sheepJump 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        /* Pattern 1: Classic left to right arc */
+        @keyframes sheepJumpLeft {
+            0% { left: -150px; bottom: var(--start-y, 25%); }
+            50% { left: 50%; bottom: var(--peak-y, 65%); }
+            100% { left: calc(100% + 150px); bottom: var(--end-y, 25%); }
         }
 
-        @keyframes sheepJump {
-            0% { left: -150px; bottom: 25%; }
-            25% { left: 20%; bottom: 55%; }
-            50% { left: 50%; bottom: 65%; }
-            75% { left: 80%; bottom: 55%; }
-            100% { left: calc(100% + 150px); bottom: 25%; }
+        /* Pattern 2: Right to left */
+        @keyframes sheepJumpRight {
+            0% { right: -150px; left: auto; bottom: var(--start-y, 25%); }
+            50% { right: 50%; left: auto; bottom: var(--peak-y, 65%); }
+            100% { right: calc(100% + 150px); left: auto; bottom: var(--end-y, 25%); }
+        }
+
+        /* Pattern 3: High bouncy arc */
+        @keyframes sheepBounce {
+            0% { left: -150px; bottom: var(--start-y, 25%); }
+            25% { left: 25%; bottom: var(--peak-y, 75%); }
+            40% { left: 40%; bottom: calc(var(--peak-y, 75%) - 20%); }
+            60% { left: 60%; bottom: var(--peak-y, 75%); }
+            75% { left: 75%; bottom: calc(var(--peak-y, 75%) - 15%); }
+            100% { left: calc(100% + 150px); bottom: var(--end-y, 25%); }
+        }
+
+        /* Pattern 4: Low fast dash */
+        @keyframes sheepDash {
+            0% { left: -150px; bottom: var(--start-y, 30%); }
+            20% { left: 15%; bottom: calc(var(--start-y, 30%) + 15%); }
+            80% { left: 85%; bottom: calc(var(--end-y, 30%) + 15%); }
+            100% { left: calc(100% + 150px); bottom: var(--end-y, 30%); }
+        }
+
+        /* Pattern 5: Zigzag */
+        @keyframes sheepZigzag {
+            0% { left: -150px; bottom: var(--start-y, 25%); }
+            25% { left: 20%; bottom: var(--peak-y, 70%); }
+            50% { left: 50%; bottom: var(--start-y, 30%); }
+            75% { left: 80%; bottom: var(--peak-y, 70%); }
+            100% { left: calc(100% + 150px); bottom: var(--end-y, 25%); }
+        }
+
+        /* Pattern 6: Slow floaty */
+        @keyframes sheepFloat {
+            0% { left: -150px; bottom: var(--start-y, 40%); }
+            30% { left: 25%; bottom: calc(var(--peak-y, 60%) + 5%); }
+            50% { left: 50%; bottom: var(--peak-y, 60%); }
+            70% { left: 75%; bottom: calc(var(--peak-y, 60%) - 5%); }
+            100% { left: calc(100% + 150px); bottom: var(--end-y, 40%); }
         }
 
         .sheep {
             position: relative;
             width: 120px;
             height: 90px;
+            transform: scale(var(--size, 1)) scaleX(var(--flip, 1));
         }
 
         .sheep svg {
@@ -320,24 +368,30 @@
         }
 
         /* Gentle bobbing animation for the sheep */
-        .sheep-container:not(.clicked) .sheep {
-            animation: sheepBob 1s ease-in-out infinite;
+        .sheep-container:not(.caught) .sheep {
+            animation: sheepBob 0.5s ease-in-out infinite;
         }
 
         @keyframes sheepBob {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-5px) rotate(2deg); }
+            0%, 100% { transform: scale(var(--size, 1)) scaleX(var(--flip, 1)) translateY(0) rotate(-3deg); }
+            50% { transform: scale(var(--size, 1)) scaleX(var(--flip, 1)) translateY(-8px) rotate(3deg); }
         }
 
         /* Sheep Click Effect */
-        .sheep-container.clicked {
-            animation: sheepPoof 0.5s ease forwards;
+        .sheep-container.caught {
+            animation: sheepPoof 0.4s ease forwards !important;
         }
 
         @keyframes sheepPoof {
             0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.8; }
+            50% { transform: scale(1.4); opacity: 0.8; }
             100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* Escaped sheep - fades as it leaves */
+        .sheep-container.escaped {
+            opacity: 0.3;
+            transition: opacity 0.3s;
         }
 
         /* Hearts burst effect */
@@ -644,81 +698,8 @@
         <!-- Ground -->
         <div class="ground"></div>
 
-        <!-- Sheep (created via JS) -->
-        <div class="sheep-container" id="sheep" onclick="catchSheep()">
-            <div class="sheep">
-                <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Fluffy wool body - multiple overlapping circles -->
-                    <g class="wool-body">
-                        <!-- Back wool puffs -->
-                        <ellipse cx="85" cy="45" rx="18" ry="16" fill="#f5f5f5"/>
-                        <ellipse cx="75" cy="35" rx="15" ry="13" fill="#fafafa"/>
-                        <ellipse cx="90" cy="38" rx="12" ry="11" fill="#f0f0f0"/>
-                        <!-- Main body wool -->
-                        <ellipse cx="65" cy="48" rx="25" ry="20" fill="#ffffff"/>
-                        <ellipse cx="55" cy="38" rx="18" ry="15" fill="#fafafa"/>
-                        <ellipse cx="75" cy="42" rx="16" ry="14" fill="#f8f8f8"/>
-                        <ellipse cx="60" cy="55" rx="20" ry="14" fill="#f5f5f5"/>
-                        <!-- Top wool puffs -->
-                        <ellipse cx="50" cy="32" rx="14" ry="12" fill="#ffffff"/>
-                        <ellipse cx="68" cy="30" rx="12" ry="10" fill="#fafafa"/>
-                        <ellipse cx="80" cy="32" rx="10" ry="9" fill="#f8f8f8"/>
-                        <!-- Front wool -->
-                        <ellipse cx="42" cy="45" rx="15" ry="14" fill="#ffffff"/>
-                        <ellipse cx="38" cy="38" rx="10" ry="9" fill="#fafafa"/>
-                    </g>
-
-                    <!-- Tail - fluffy puff -->
-                    <ellipse cx="100" cy="48" rx="10" ry="9" fill="#f0f0f0"/>
-                    <ellipse cx="105" cy="45" rx="7" ry="6" fill="#fafafa"/>
-
-                    <!-- Legs -->
-                    <g class="legs">
-                        <!-- Back legs -->
-                        <path d="M78 62 L80 80 L76 80 L74 62" fill="#3d3d3d"/>
-                        <ellipse cx="78" cy="80" rx="3" ry="2" fill="#2d2d2d"/>
-                        <path d="M68 63 L70 80 L66 80 L64 63" fill="#3d3d3d"/>
-                        <ellipse cx="68" cy="80" rx="3" ry="2" fill="#2d2d2d"/>
-                        <!-- Front legs -->
-                        <path d="M52 60 L54 80 L50 80 L48 60" fill="#3d3d3d"/>
-                        <ellipse cx="52" cy="80" rx="3" ry="2" fill="#2d2d2d"/>
-                        <path d="M42 58 L44 78 L40 78 L38 58" fill="#3d3d3d"/>
-                        <ellipse cx="42" cy="78" rx="3" ry="2" fill="#2d2d2d"/>
-                    </g>
-
-                    <!-- Head -->
-                    <g class="head">
-                        <!-- Ears -->
-                        <ellipse cx="18" cy="28" rx="8" ry="5" fill="#4a4a4a" transform="rotate(-30 18 28)"/>
-                        <ellipse cx="38" cy="22" rx="8" ry="5" fill="#4a4a4a" transform="rotate(30 38 22)"/>
-                        <ellipse cx="18" cy="28" rx="5" ry="3" fill="#ffb6c1" transform="rotate(-30 18 28)"/>
-                        <ellipse cx="38" cy="22" rx="5" ry="3" fill="#ffb6c1" transform="rotate(30 38 22)"/>
-
-                        <!-- Main head shape -->
-                        <ellipse cx="28" cy="38" rx="18" ry="16" fill="#3d3d3d"/>
-
-                        <!-- Fluffy top of head -->
-                        <ellipse cx="28" cy="25" rx="12" ry="8" fill="#ffffff"/>
-                        <ellipse cx="22" cy="28" rx="8" ry="6" fill="#fafafa"/>
-                        <ellipse cx="34" cy="28" rx="8" ry="6" fill="#fafafa"/>
-
-                        <!-- Eyes - closed/sleepy -->
-                        <path d="M20 38 Q23 42 26 38" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
-                        <path d="M30 38 Q33 42 36 38" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-                        <!-- Rosy cheeks -->
-                        <ellipse cx="17" cy="44" rx="5" ry="3" fill="#ffb6c1" opacity="0.6"/>
-                        <ellipse cx="39" cy="44" rx="5" ry="3" fill="#ffb6c1" opacity="0.6"/>
-
-                        <!-- Cute nose -->
-                        <ellipse cx="28" cy="48" rx="3" ry="2" fill="#2d2d2d"/>
-
-                        <!-- Little smile -->
-                        <path d="M25 52 Q28 55 31 52" stroke="#2d2d2d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                    </g>
-                </svg>
-            </div>
-        </div>
+        <!-- Sheep spawn area (sheep created dynamically via JS) -->
+        <div class="sheep-area" id="sheep-area"></div>
 
         <!-- Message Card -->
         <div class="message-card" id="message-card">
@@ -880,14 +861,19 @@
         ];
 
         // ============ STATE ============
-        let currentSheep = 0;
-        let sheepCaught = false;
+        let sheepCaught = 0;           // Total sheep caught
         let gameStarted = false;
+        let sheepIdCounter = 0;        // Unique ID for each sheep
+        let activeSheep = new Map();   // Track active sheep on screen
+        const TOTAL_SHEEP_NEEDED = 8;  // Sheep needed to win
 
         // ============ AUDIO SYSTEM ============
         let audioCtx = null;
         let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
         let lullabyInterval = null;
+        let ambientPlaying = false;
+        let windNode = null;
+        let windGain = null;
 
         function initAudio() {
             if (!audioCtx) {
@@ -905,8 +891,13 @@
             if (soundEnabled) {
                 initAudio();
                 playPop();
+                // Restart ambient sounds if game is in progress
+                if (gameStarted) {
+                    startAmbientSounds();
+                }
             } else {
                 stopLullaby();
+                stopAmbientSounds();
             }
         }
 
@@ -1133,6 +1124,84 @@
             }
         }
 
+        // ============ AMBIENT SOUNDS ============
+        // Cozy night atmosphere with soft breeze
+
+        function startAmbientSounds() {
+            if (!soundEnabled || !audioCtx || ambientPlaying) return;
+            ambientPlaying = true;
+
+            // Start soft wind/breeze
+            startWind();
+        }
+
+        function stopAmbientSounds() {
+            ambientPlaying = false;
+
+            // Stop wind
+            if (windGain) {
+                const now = audioCtx ? audioCtx.currentTime : 0;
+                windGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                setTimeout(() => {
+                    if (windNode) {
+                        windNode.stop();
+                        windNode = null;
+                    }
+                    windGain = null;
+                }, 600);
+            }
+        }
+
+        function startWind() {
+            if (!soundEnabled || !audioCtx) return;
+
+            // Create gentle wind using filtered noise
+            const bufferSize = audioCtx.sampleRate * 4;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+
+            // Create smooth noise
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+
+            windNode = audioCtx.createBufferSource();
+            windNode.buffer = buffer;
+            windNode.loop = true;
+
+            // Multiple filters for soft, dreamy wind
+            const lowpass = audioCtx.createBiquadFilter();
+            lowpass.type = 'lowpass';
+            lowpass.frequency.setValueAtTime(400, audioCtx.currentTime);
+            lowpass.Q.setValueAtTime(1, audioCtx.currentTime);
+
+            const highpass = audioCtx.createBiquadFilter();
+            highpass.type = 'highpass';
+            highpass.frequency.setValueAtTime(100, audioCtx.currentTime);
+
+            windGain = audioCtx.createGain();
+            windGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+            windGain.gain.exponentialRampToValueAtTime(0.025, audioCtx.currentTime + 2);
+
+            // Gentle volume modulation for breathing wind effect
+            const lfo = audioCtx.createOscillator();
+            const lfoGain = audioCtx.createGain();
+            lfo.type = 'sine';
+            lfo.frequency.setValueAtTime(0.15, audioCtx.currentTime); // Very slow modulation
+            lfoGain.gain.setValueAtTime(0.008, audioCtx.currentTime);
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(windGain.gain);
+
+            windNode.connect(lowpass);
+            lowpass.connect(highpass);
+            highpass.connect(windGain);
+            windGain.connect(audioCtx.destination);
+
+            windNode.start();
+            lfo.start();
+        }
+
         // ============ INITIALIZATION ============
         function init() {
             createStars();
@@ -1157,68 +1226,190 @@
         }
 
         // ============ GAME FLOW ============
+
+        // Animation patterns with their properties
+        const PATTERNS = [
+            { name: 'sheepJumpLeft', duration: [2.5, 3.5], easing: 'ease-in-out', flip: 1 },
+            { name: 'sheepJumpRight', duration: [2.5, 3.5], easing: 'ease-in-out', flip: -1 },
+            { name: 'sheepBounce', duration: [3, 4], easing: 'ease-in-out', flip: 1 },
+            { name: 'sheepDash', duration: [1.5, 2.2], easing: 'ease-out', flip: 1 },
+            { name: 'sheepZigzag', duration: [3, 4], easing: 'linear', flip: 1 },
+            { name: 'sheepFloat', duration: [3.5, 4.5], easing: 'ease-in-out', flip: 1 },
+        ];
+
+        let lastPatternIndex = -1; // Track last used pattern to avoid repeats
+
         function startGame() {
             initAudio();
             playChime();
+            startAmbientSounds();
             document.getElementById('title-screen').classList.remove('active');
             document.getElementById('game-screen').classList.add('active');
             gameStarted = true;
-            setTimeout(launchSheep, 500);
+
+            // Spawn first sheep
+            setTimeout(spawnSheep, 500);
         }
 
-        function launchSheep() {
-            if (currentSheep >= messages.length) {
-                showFinalScreen();
-                return;
-            }
+        function spawnSheep() {
+            if (!gameStarted || sheepCaught >= TOTAL_SHEEP_NEEDED) return;
 
-            const sheep = document.getElementById('sheep');
-            sheep.style.display = 'block';
-            sheep.classList.remove('clicked');
-            sheep.classList.remove('jumping');
+            const sheepArea = document.getElementById('sheep-area');
+            const sheepId = sheepIdCounter++;
 
-            // Reset position
-            sheep.style.left = '-150px';
-            sheep.style.bottom = '25%';
+            // Pick a random pattern (avoid repeating the same one)
+            let patternIndex;
+            do {
+                patternIndex = Math.floor(Math.random() * PATTERNS.length);
+            } while (patternIndex === lastPatternIndex && PATTERNS.length > 1);
+            lastPatternIndex = patternIndex;
 
-            // Trigger reflow
-            void sheep.offsetWidth;
+            const pattern = PATTERNS[patternIndex];
 
-            // Start jump animation
-            sheep.classList.add('jumping');
-            sheepCaught = false;
+            // Randomize within the pattern's ranges
+            const duration = pattern.duration[0] + Math.random() * (pattern.duration[1] - pattern.duration[0]);
+            const startY = 22 + Math.random() * 10;    // 22-32%
+            const peakY = 55 + Math.random() * 20;     // 55-75%
+            const endY = 22 + Math.random() * 10;      // 22-32%
+            const size = 0.85 + Math.random() * 0.3;   // 0.85-1.15 scale
+
+            // Create sheep element
+            const sheepContainer = document.createElement('div');
+            sheepContainer.className = 'sheep-container';
+            sheepContainer.dataset.sheepId = sheepId;
+
+            // Set CSS custom properties
+            sheepContainer.style.setProperty('--animation-name', pattern.name);
+            sheepContainer.style.setProperty('--duration', duration + 's');
+            sheepContainer.style.setProperty('--easing', pattern.easing);
+            sheepContainer.style.setProperty('--start-y', startY + '%');
+            sheepContainer.style.setProperty('--peak-y', peakY + '%');
+            sheepContainer.style.setProperty('--end-y', endY + '%');
+            sheepContainer.style.setProperty('--size', size);
+            sheepContainer.style.setProperty('--flip', pattern.flip);
+
+            // Sheep SVG
+            sheepContainer.innerHTML = `
+                <div class="sheep">
+                    <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+                        <g class="wool-body">
+                            <ellipse cx="85" cy="45" rx="18" ry="16" fill="#f5f5f5"/>
+                            <ellipse cx="75" cy="35" rx="15" ry="13" fill="#fafafa"/>
+                            <ellipse cx="90" cy="38" rx="12" ry="11" fill="#f0f0f0"/>
+                            <ellipse cx="65" cy="48" rx="25" ry="20" fill="#ffffff"/>
+                            <ellipse cx="55" cy="38" rx="18" ry="15" fill="#fafafa"/>
+                            <ellipse cx="75" cy="42" rx="16" ry="14" fill="#f8f8f8"/>
+                            <ellipse cx="60" cy="55" rx="20" ry="14" fill="#f5f5f5"/>
+                            <ellipse cx="50" cy="32" rx="14" ry="12" fill="#ffffff"/>
+                            <ellipse cx="68" cy="30" rx="12" ry="10" fill="#fafafa"/>
+                            <ellipse cx="80" cy="32" rx="10" ry="9" fill="#f8f8f8"/>
+                            <ellipse cx="42" cy="45" rx="15" ry="14" fill="#ffffff"/>
+                            <ellipse cx="38" cy="38" rx="10" ry="9" fill="#fafafa"/>
+                        </g>
+                        <ellipse cx="100" cy="48" rx="10" ry="9" fill="#f0f0f0"/>
+                        <ellipse cx="105" cy="45" rx="7" ry="6" fill="#fafafa"/>
+                        <g class="legs">
+                            <path d="M78 62 L80 80 L76 80 L74 62" fill="#3d3d3d"/>
+                            <ellipse cx="78" cy="80" rx="3" ry="2" fill="#2d2d2d"/>
+                            <path d="M68 63 L70 80 L66 80 L64 63" fill="#3d3d3d"/>
+                            <ellipse cx="68" cy="80" rx="3" ry="2" fill="#2d2d2d"/>
+                            <path d="M52 60 L54 80 L50 80 L48 60" fill="#3d3d3d"/>
+                            <ellipse cx="52" cy="80" rx="3" ry="2" fill="#2d2d2d"/>
+                            <path d="M42 58 L44 78 L40 78 L38 58" fill="#3d3d3d"/>
+                            <ellipse cx="42" cy="78" rx="3" ry="2" fill="#2d2d2d"/>
+                        </g>
+                        <g class="head">
+                            <ellipse cx="18" cy="28" rx="8" ry="5" fill="#4a4a4a" transform="rotate(-30 18 28)"/>
+                            <ellipse cx="38" cy="22" rx="8" ry="5" fill="#4a4a4a" transform="rotate(30 38 22)"/>
+                            <ellipse cx="18" cy="28" rx="5" ry="3" fill="#ffb6c1" transform="rotate(-30 18 28)"/>
+                            <ellipse cx="38" cy="22" rx="5" ry="3" fill="#ffb6c1" transform="rotate(30 38 22)"/>
+                            <ellipse cx="28" cy="38" rx="18" ry="16" fill="#3d3d3d"/>
+                            <ellipse cx="28" cy="25" rx="12" ry="8" fill="#ffffff"/>
+                            <ellipse cx="22" cy="28" rx="8" ry="6" fill="#fafafa"/>
+                            <ellipse cx="34" cy="28" rx="8" ry="6" fill="#fafafa"/>
+                            <path d="M20 38 Q23 42 26 38" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <path d="M30 38 Q33 42 36 38" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <ellipse cx="17" cy="44" rx="5" ry="3" fill="#ffb6c1" opacity="0.6"/>
+                            <ellipse cx="39" cy="44" rx="5" ry="3" fill="#ffb6c1" opacity="0.6"/>
+                            <ellipse cx="28" cy="48" rx="3" ry="2" fill="#2d2d2d"/>
+                            <path d="M25 52 Q28 55 31 52" stroke="#2d2d2d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+            `;
+
+            // Click handler
+            sheepContainer.addEventListener('click', () => catchSheep(sheepContainer, sheepId));
+
+            // Track this sheep
+            activeSheep.set(sheepId, sheepContainer);
+
+            // Add to DOM
+            sheepArea.appendChild(sheepContainer);
             playBoing();
+
+            // Handle animation end (sheep escaped)
+            sheepContainer.addEventListener('animationend', () => {
+                if (!sheepContainer.classList.contains('caught')) {
+                    sheepContainer.classList.add('escaped');
+                    activeSheep.delete(sheepId);
+                    setTimeout(() => {
+                        sheepContainer.remove();
+                        // Spawn next sheep after a short delay
+                        if (gameStarted && sheepCaught < TOTAL_SHEEP_NEEDED) {
+                            setTimeout(spawnSheep, 400);
+                        }
+                    }, 100);
+                }
+            });
         }
 
-        function catchSheep() {
-            if (sheepCaught || currentSheep >= messages.length) return;
+        function catchSheep(sheepElement, sheepId) {
+            // Prevent double-catching
+            if (sheepElement.classList.contains('caught') || sheepCaught >= TOTAL_SHEEP_NEEDED) return;
 
-            sheepCaught = true;
-            const sheep = document.getElementById('sheep');
+            // Get position BEFORE stopping animation
+            const rect = sheepElement.getBoundingClientRect();
+
+            // Fix the sheep's position where it was caught
+            sheepElement.style.left = rect.left + 'px';
+            sheepElement.style.top = rect.top + 'px';
+            sheepElement.style.bottom = 'auto';
+            sheepElement.style.right = 'auto';
+            sheepElement.style.position = 'fixed';
+            sheepElement.style.animation = 'sheepPoof 0.4s ease forwards';
+
+            sheepElement.classList.add('caught');
+            activeSheep.delete(sheepId);
 
             // Play sounds
             playBaa();
             setTimeout(playSparkle, 100);
 
-            // Get current position for hearts burst
-            const rect = sheep.getBoundingClientRect();
+            // Hearts burst at caught position
             createHeartsBurst(rect.left + rect.width/2, rect.top + rect.height/2);
 
-            // Poof the sheep
-            sheep.classList.add('clicked');
+            // Update count
+            sheepCaught++;
+            document.getElementById('sheep-count').textContent = sheepCaught;
 
-            // Show message
+            // Remove sheep after poof animation
             setTimeout(() => {
-                sheep.style.display = 'none';
-                showMessage(messages[currentSheep]);
+                sheepElement.remove();
+
+                // Show message
+                if (sheepCaught <= messages.length) {
+                    showMessage(messages[sheepCaught - 1]);
+                }
             }, 400);
         }
+
 
         function createHeartsBurst(x, y) {
             const hearts = ['💕', '💗', '💖', '✨', '💜', '🤍'];
             const container = document.getElementById('game-screen');
 
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 10; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'burst-heart';
                 heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
@@ -1226,13 +1417,12 @@
                 heart.style.left = x + 'px';
                 heart.style.top = y + 'px';
 
-                const angle = (i / 8) * Math.PI * 2;
-                const distance = 80 + Math.random() * 40;
+                const angle = (i / 10) * Math.PI * 2;
+                const distance = 60 + Math.random() * 60;
                 heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
                 heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
 
                 container.appendChild(heart);
-
                 setTimeout(() => heart.remove(), 1000);
             }
         }
@@ -1250,19 +1440,20 @@
             const card = document.getElementById('message-card');
             card.classList.remove('show');
 
-            currentSheep++;
-            document.getElementById('sheep-count').textContent = currentSheep;
-
-            setTimeout(() => {
-                if (currentSheep >= messages.length) {
-                    showFinalScreen();
-                } else {
-                    launchSheep();
-                }
-            }, 500);
+            // Check if game is complete
+            if (sheepCaught >= TOTAL_SHEEP_NEEDED) {
+                setTimeout(showFinalScreen, 300);
+            } else {
+                // Spawn next sheep
+                setTimeout(spawnSheep, 300);
+            }
         }
 
         function showFinalScreen() {
+            // Clear any remaining sheep
+            document.getElementById('sheep-area').innerHTML = '';
+            activeSheep.clear();
+
             document.getElementById('game-screen').classList.remove('active');
             document.getElementById('final-screen').classList.add('active');
             createFloatingHearts();
@@ -1288,13 +1479,23 @@
         function replay() {
             // Stop sounds
             stopLullaby();
+            stopAmbientSounds();
             playPop();
 
+            // Clear sheep
+            document.getElementById('sheep-area').innerHTML = '';
+            activeSheep.clear();
+
             // Reset state
-            currentSheep = 0;
-            sheepCaught = false;
+            sheepCaught = 0;
+            gameStarted = false;
+            sheepIdCounter = 0;
+            lastPatternIndex = -1;
             document.getElementById('sheep-count').textContent = '0';
             document.getElementById('floating-hearts').innerHTML = '';
+
+            // Hide message card if visible
+            document.getElementById('message-card').classList.remove('show');
 
             // Switch screens
             document.getElementById('final-screen').classList.remove('active');
