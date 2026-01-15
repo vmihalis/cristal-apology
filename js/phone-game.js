@@ -31,7 +31,7 @@ const chargingMessages = [
 const noAnswerMessages = [
     "No answer... she must be in deep sleep 😢",
     "Still no answer... please pick up...",
-    "She didn't hear it... I'm so sorry, Cristal..."
+    "She didn't answer... I'm so cooked"
 ];
 
 // ============ START STAGE 2 ============
@@ -61,8 +61,8 @@ function runCallDyingIntro() {
     phoneScreenSmall.classList.add('on-call');
     phoneScreenSmall.querySelector('.phone-battery-icon').textContent = '📞';
 
-    // Start with a running call timer (simulate being on call for ~2h47m)
-    let hours = 2;
+    // Start with a running call timer (simulate being on call for ~4h47m)
+    let hours = 4;
     let minutes = 47;
     let seconds = 13;
 
@@ -82,13 +82,31 @@ function runCallDyingIntro() {
             String(seconds).padStart(2, '0');
     }, 1000);
 
-    // After 2 seconds, show low battery warning
+    // After 2 seconds, show low battery warning with countdown
+    const batteryText = lowBatteryWarning.querySelectorAll('span')[1];
+
     setTimeout(() => {
         lowBatteryWarning.classList.add('show');
+        batteryText.textContent = 'Low Battery - 3%';
         playAlarm(); // Warning beep
     }, 2000);
 
-    // After 4 seconds, phone dies
+    // Countdown: 3% -> 2%
+    setTimeout(() => {
+        batteryText.textContent = 'Low Battery - 2%';
+    }, 2700);
+
+    // Countdown: 2% -> 1%
+    setTimeout(() => {
+        batteryText.textContent = 'Low Battery - 1%';
+    }, 3400);
+
+    // Countdown: 1% -> 0%
+    setTimeout(() => {
+        batteryText.textContent = 'Low Battery - 0%';
+    }, 4100);
+
+    // After countdown, phone dies
     setTimeout(() => {
         clearInterval(callTimerInterval);
         playPhoneDie();
@@ -98,19 +116,19 @@ function runCallDyingIntro() {
         phoneScreenSmall.classList.remove('on-call');
         phoneScreenSmall.classList.add('dead');
         phoneScreenSmall.querySelector('.phone-battery-icon').textContent = '💀';
-    }, 4000);
+    }, 4800);
 
-    // After 5.5 seconds, show disconnected message
+    // After 6.3 seconds, show disconnected message
     setTimeout(() => {
         callDisconnectedMsg.classList.add('show');
-    }, 5500);
+    }, 6300);
 
-    // After 7.5 seconds, hide floating phone and transition to search
+    // After 8.3 seconds, hide floating phone and transition to search
     setTimeout(() => {
         callDyingScreen.classList.remove('show');
         stage2Phase = 'wakeup';
         runWakeUpPhase();
-    }, 7500);
+    }, 8300);
 }
 
 // ============ WAKE UP PHASE ============
@@ -185,7 +203,7 @@ function handleSearchClick(e) {
 let chargingGameState = {
     active: false,
     battery: 0,
-    targetBattery: 35,
+    targetBattery: 100,
     phoneX: 50, // percentage
     isDragging: false,
     orbSpawnInterval: null,
@@ -201,7 +219,7 @@ function runChargingPhase() {
     chargingGameState = {
         active: true,
         battery: 0,
-        targetBattery: 35,
+        targetBattery: 100,
         phoneX: 50,
         isDragging: false,
         orbSpawnInterval: null,
@@ -550,8 +568,18 @@ function runCallingPhase() {
     stage2Phase = 'calling';
     callAttempts = 0;
 
+    // Show calling screen but don't auto-start - wait for user to press call
     document.getElementById('calling-screen').classList.add('show');
-    startCallAttempt();
+
+    // Show "Call" button, hide end button initially
+    const callStatus = document.getElementById('call-status');
+    const retryBtn = document.getElementById('retry-call-btn');
+    const endBtn = document.getElementById('end-call-btn');
+
+    callStatus.textContent = 'Press to call...';
+    callStatus.classList.remove('ringing');
+    retryBtn.style.display = 'flex';
+    endBtn.style.display = 'none';
 }
 
 function startCallAttempt() {
@@ -586,10 +614,13 @@ function startCallAttempt() {
                 noAnswerMsg.classList.add('show');
 
                 if (callAttempts < MAX_CALL_ATTEMPTS) {
+                    // Show retry button for next attempt
+                    callStatus.textContent = 'Try again?';
                     retryBtn.style.display = 'flex';
                     endBtn.style.display = 'none';
                 } else {
-                    // Final attempt failed
+                    // Final attempt failed - transition after delay
+                    endBtn.style.display = 'none';
                     setTimeout(() => {
                         endStage2();
                     }, 2500);
@@ -692,10 +723,10 @@ function resetStage2() {
         catcherPhone.classList.remove('catching', 'hit-surge');
     }
 
-    // Reset call screen
-    document.getElementById('call-status').textContent = 'Calling...';
+    // Reset call screen - initial state shows call button, not calling
+    document.getElementById('call-status').textContent = 'Press to call...';
     document.getElementById('call-status').classList.remove('ringing');
     document.getElementById('no-answer-msg').classList.remove('show');
-    document.getElementById('retry-call-btn').style.display = 'none';
-    document.getElementById('end-call-btn').style.display = 'flex';
+    document.getElementById('retry-call-btn').style.display = 'flex';
+    document.getElementById('end-call-btn').style.display = 'none';
 }
