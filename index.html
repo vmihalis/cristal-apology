@@ -78,21 +78,24 @@
 
     <!-- ============ STAGE 2: PHONE CHARGING ============ -->
     <div class="scene" id="phone-stage">
-        <!-- Call Dying Intro Screen -->
+        <!-- Call Dying Intro Screen - Telegram style -->
         <div class="call-dying-screen" id="call-dying-screen">
-            <div class="call-active-phone">
-                <div class="call-screen-content">
-                    <div class="call-contact-photo-big"><img src="images/cristal-photo.jpg" alt="Cristal"></div>
-                    <div class="call-contact-name-big">Cristal</div>
-                    <div class="call-timer" id="call-timer">02:47:13</div>
-                    <div class="call-active-indicator">
-                        <div class="call-active-dot"></div>
-                        <span>Connected</span>
-                    </div>
-                    <div class="low-battery-warning" id="low-battery-warning">
-                        <span>🪫</span>
-                        <span>Low Battery - 3%</span>
-                    </div>
+            <div class="telegram-call-active">
+                <!-- Animated pulse rings -->
+                <div class="active-call-rings">
+                    <div class="active-ring"></div>
+                    <div class="active-ring"></div>
+                </div>
+                <div class="call-contact-photo-big"><img src="images/cristal-photo.jpg" alt="Cristal"></div>
+                <div class="call-contact-name-big">Cristal</div>
+                <div class="call-timer" id="call-timer">04:47:13</div>
+                <div class="call-active-indicator">
+                    <div class="call-active-dot"></div>
+                    <span>Telegram Voice Call</span>
+                </div>
+                <div class="low-battery-warning" id="low-battery-warning">
+                    <span>🪫</span>
+                    <span>Low Battery - 3%</span>
                 </div>
                 <div class="phone-dying-overlay" id="phone-dying-overlay">
                     <span class="dead-icon">📵</span>
@@ -289,15 +292,43 @@
             <div class="charging-message" id="charging-message"></div>
         </div>
 
-        <!-- Calling screen overlay -->
+        <!-- Calling screen overlay - Telegram style -->
         <div class="calling-screen" id="calling-screen">
-            <div class="call-phone">
+            <div class="telegram-call">
+                <!-- Animated rings behind photo -->
+                <div class="call-rings">
+                    <div class="call-ring"></div>
+                    <div class="call-ring"></div>
+                    <div class="call-ring"></div>
+                </div>
                 <div class="contact-photo"><img src="images/cristal-photo.jpg" alt="Cristal"></div>
                 <div class="contact-name">Cristal</div>
                 <div class="call-status" id="call-status">Calling...</div>
-                <div class="call-actions">
-                    <button class="call-btn end-call" id="end-call-btn" onclick="endCallAttempt()">📵</button>
-                    <button class="call-btn retry-call" id="retry-call-btn" onclick="retryCall()" style="display: none;">📞</button>
+
+                <!-- Telegram-style action buttons -->
+                <div class="telegram-call-actions">
+                    <div class="call-action-btn" id="speaker-btn">
+                        <span>🔊</span>
+                        <small>speaker</small>
+                    </div>
+                    <div class="call-action-btn" id="video-btn">
+                        <span>📹</span>
+                        <small>video</small>
+                    </div>
+                    <div class="call-action-btn" id="mute-btn">
+                        <span>🎤</span>
+                        <small>mute</small>
+                    </div>
+                </div>
+
+                <!-- End/Retry call button -->
+                <div class="telegram-end-call">
+                    <button class="end-call-btn" id="end-call-btn" onclick="endCallAttempt()">
+                        <span>📞</span>
+                    </button>
+                    <button class="retry-call-btn" id="retry-call-btn" onclick="retryCall()" style="display: none;">
+                        <span>📞</span>
+                    </button>
                 </div>
             </div>
             <div class="no-answer-msg" id="no-answer-msg"></div>
